@@ -178,12 +178,12 @@ void myReshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (w <= h)
-		glFrustum(-2.0, 2.0, -2.0 * (GLfloat)h / (GLfloat)w,
-			2.0 * (GLfloat)h / (GLfloat)w, 3.0, 20.0);
-	else
-		glFrustum(-2.0 * (GLfloat)w / (GLfloat)h,
-			2.0 * (GLfloat)w / (GLfloat)h, -2.0, 2.0, 3.0, 20.0);
+	if (w <= h) {
+		glFrustum(-2.0, 2.0, -2.0 * (GLfloat) h / (GLfloat) w, 2.0 * (GLfloat) h / (GLfloat) w, 3.0, 20.0);
+	}
+	else {
+		glFrustum(-2.0 * (GLfloat) w / (GLfloat) h, 2.0 * (GLfloat) w / (GLfloat) h, -2.0, 2.0, 3.0, 20.0);
+	}
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -200,16 +200,13 @@ void myInit() {
 	cube.selectCube();
 }
 
-
-
-
 void main(int argc, char** argv) {
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Cube-Man Game");
-	myInit();
+	//myInit();
 	glutReshapeFunc(myReshape);
 	glutDisplayFunc(display);
 	//glutKeyboardFunc(teclas);
