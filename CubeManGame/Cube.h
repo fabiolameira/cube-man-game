@@ -2,12 +2,27 @@
 
 class Cube {
 public:
-	double x, y;
 	float color[3];
-	bool visible;
+
+	float vertices[8][3] = { {-1.0,-1.0,-1.0}, {1.0,-1.0,-1.0},
+						 {1.0,1.0,-1.0}, {-1.0,1.0,-1.0}, {-1.0,-1.0,1.0},
+						 {1.0,-1.0,1.0}, {1.0,1.0,1.0}, {-1.0,1.0,1.0} };
+
+	float normals[8][3] = { {-1.0,-1.0,-1.0}, {1.0,-1.0,-1.0},
+						{1.0,1.0,-1.0}, {-1.0,1.0,-1.0}, {-1.0,-1.0,1.0},
+						{1.0,-1.0,1.0}, {1.0,1.0,1.0}, {-1.0,1.0,1.0} };
+
+	float colors[8][3] = { {0.0,0.0,0.0}, {1.0,0.0,0.0},
+					   {1.0,1.0,0.0}, {0.0,1.0,0.0}, {0.0,0.0,1.0},
+					   {1.0,0.0,1.0}, {1.0,1.0,1.0}, {0.0,1.0,1.0} };
 
 	Cube();
 
-	Cube(double x, double y, bool visible, float red, float green, float);
+	Cube(float red, float green, float blue);
 
+	void polygon(int a, int b, int c, int d);
+
+	void lineLoop(int a, int b, int c, int d);
+
+	void draw();
 };

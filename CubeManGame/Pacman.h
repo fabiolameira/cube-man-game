@@ -1,18 +1,17 @@
 #include <gl/glut.h>
+#include "Cube.h"
 
 class Pacman {
 public:
-	
-	int speed;
-	double angle; //Anglo de rotacao necessária em x e em y em graus multiplos de 90
-	bool animate;
 
-	Pacman(int, int);
+	Cube cube;
+	int x, y;
+	float scale;
+
+	Pacman(int x, int y);
+
+	void translatePosition();
 
 	void draw();
-
-	void move(); //move the pacman
-
-	void reinit();  //reinitialize everything
 
 };

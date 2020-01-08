@@ -1,8 +1,8 @@
 #include <GL/glut.h>
 
 // Variaveis globais
-constexpr auto CELL_SIZE = 2.0; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
-constexpr auto TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
+const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
+const int TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
 int numberOfCubes = 5;
 
 GLfloat vertices[][3] = { {-1.0,-1.0,-1.0}, {1.0,-1.0,-1.0},
