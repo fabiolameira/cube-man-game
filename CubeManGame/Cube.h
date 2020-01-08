@@ -6,6 +6,8 @@ public:
 	float color[3];
 	bool visible;
 
-	Cube(double, double, bool);
+	Cube();
+
+	Cube(double x, double y, bool visible, float red, float green, float);
 
 };

@@ -1,10 +1,11 @@
-#include <GL/glut.h>
+#include <gl/glut.h>
 #include "Cube.h"
 
-Cube::Cube(double x, double y, bool visible) {
+Cube::Cube(double x, double y, bool visible, float red, float green, float blue) {
 	this->x = x;
 	this->y = y;
-	this->color[0] = rand() / RAND_MAX; // Red
-	this->color[1] = rand() / RAND_MAX; // Green
-	this->color[2] = rand() / RAND_MAX; // Blue
+	this->visible = visible;
+	this->color[0] = red;
+	this->color[1] = green;
+	this->color[2] = blue;
 }
