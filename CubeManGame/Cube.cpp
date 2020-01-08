@@ -1,6 +1,12 @@
 #include <gl/glut.h>
 #include "Cube.h"
 
+Cube::Cube() {
+	this->color[0] = 1;
+	this->color[1] = 0;
+	this->color[2] = 0;
+}
+
 Cube::Cube(float red, float green, float blue) {
 	this->color[0] = red;
 	this->color[1] = green;
