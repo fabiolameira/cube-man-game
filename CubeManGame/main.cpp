@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"
 
@@ -9,6 +10,7 @@ extern const int TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadra
 
 Pacman pacman = Pacman(1, 1);
 Ghost ghost = Ghost();
+Board board = Board();
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -16,12 +18,14 @@ void display() {
 	glLoadIdentity();
 
 	// Camara
-	gluLookAt(0, -5, 1, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	gluLookAt(0, -5, 5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
 	pacman.draw();
+
+	board.draw();
 	ghost.draw();
 
 	glFlush();

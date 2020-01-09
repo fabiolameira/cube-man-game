@@ -1,3 +1,4 @@
+#pragma once
 #include <gl/glut.h>
 #include "Cube.h"
 
