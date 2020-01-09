@@ -1,5 +1,6 @@
 #include <GL/glut.h>
 #include "Pacman.h"
+#include "Ghost.h"
 
 
 // Variaveis globais
@@ -7,6 +8,7 @@ extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as f
 extern const int TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
 
 Pacman pacman = Pacman(1, 1);
+Ghost ghost = Ghost();
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -20,6 +22,7 @@ void display() {
 	glScalef(0.2, 0.2, 0.2);
 
 	pacman.draw();
+	ghost.draw();
 
 	glFlush();
 
