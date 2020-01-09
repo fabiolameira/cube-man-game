@@ -10,6 +10,8 @@ public:
 
 	Pacman(int x, int y);
 
+	void move(int key);
+
 	void translatePosition();
 
 	void draw();

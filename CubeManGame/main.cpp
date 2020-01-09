@@ -43,21 +43,7 @@ void myReshape(int w, int h) {
 }
 
 void specialKeyboard(int key, int x, int y) {
-	switch (key) {
-	case GLUT_KEY_UP:
-		pacman.y += 1;
-		break;
-	case GLUT_KEY_DOWN:
-		pacman.y -= 1;
-		break;
-	case GLUT_KEY_LEFT:
-		pacman.x -= 1;
-		break;
-	case GLUT_KEY_RIGHT:
-		pacman.x += 1;
-		break;
-	}
-
+	pacman.move(key);
 	glutPostRedisplay();
 }
 
