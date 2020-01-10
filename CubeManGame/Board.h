@@ -7,7 +7,7 @@ extern const int CELL_SIZE;
 class Board : public Cube {
 public:
 	Cube cube;
-    bool matrix[10][10];
+    bool matrix[12][12];
 
 	Board();
 

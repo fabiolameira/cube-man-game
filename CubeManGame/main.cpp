@@ -6,7 +6,7 @@
 
 // Variaveis globais
 extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
-extern const int TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
+extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
 
 Pacman pacman = Pacman(1, 1);
 Ghost ghost = Ghost();
@@ -47,7 +47,28 @@ void myReshape(int w, int h) {
 }
 
 void specialKeyboard(int key, int x, int y) {
-	pacman.move(key);
+	switch (key) {
+	case GLUT_KEY_UP:
+		if (pacman.y != TAB_SIZE - 1 && board.haveCube(pacman.x, pacman.y + 1)) {
+			pacman.y += 1;
+		}
+		break;
+	case GLUT_KEY_DOWN:
+		if (pacman.y != 0 && board.haveCube(pacman.x, pacman.y - 1)) {
+			pacman.y -= 1;
+		}
+		break;
+	case GLUT_KEY_RIGHT:
+		if (pacman.x != TAB_SIZE - 1 && board.haveCube(pacman.x + 1, pacman.y)) {
+			pacman.x += 1;
+		}
+		break;
+	case GLUT_KEY_LEFT:
+		if (pacman.x != 0 && board.haveCube(pacman.x - 1, pacman.y)) {
+			pacman.x -= 1;
+		}
+		break;
+	}
 	glutPostRedisplay();
 }
 
