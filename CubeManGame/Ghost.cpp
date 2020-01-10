@@ -19,6 +19,10 @@ Ghost::Ghost() {
 	this->scale = 0.8;
 }
 
+void Ghost::randomMove() {
+	this->x += 1;
+}
+
 void Ghost::translatePosition() {
 	glTranslatef(-(TAB_SIZE * CELL_SIZE) / 2, -(TAB_SIZE * CELL_SIZE) / 2, CELL_SIZE / 2);
 	glTranslatef(this->x * CELL_SIZE + CELL_SIZE / 2, this->y * CELL_SIZE + CELL_SIZE / 2, 0);

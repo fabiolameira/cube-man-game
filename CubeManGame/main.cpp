@@ -4,9 +4,13 @@
 #include "Ghost.h"
 
 
-// Variaveis globais
+// Constantes globais
 extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
 extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
+
+// Variaveis globais
+int timeUpdate = 500;
+
 
 Pacman pacman = Pacman(1, 1);
 Ghost ghost = Ghost();
@@ -24,7 +28,6 @@ void display() {
 	glScalef(0.2, 0.2, 0.2);
 
 	pacman.draw();
-
 	board.draw();
 	ghost.draw();
 
@@ -46,26 +49,34 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void update(int v) {
+
+	ghost.randomMove();
+
+	glutPostRedisplay();
+	glutTimerFunc(v, update, v);
+}
+
 void specialKeyboard(int key, int x, int y) {
 	switch (key) {
 	case GLUT_KEY_UP:
 		if (pacman.y != TAB_SIZE - 1 && board.haveCube(pacman.x, pacman.y + 1)) {
-			pacman.y += 1;
+			pacman.y++;
 		}
 		break;
 	case GLUT_KEY_DOWN:
 		if (pacman.y != 0 && board.haveCube(pacman.x, pacman.y - 1)) {
-			pacman.y -= 1;
+			pacman.y--;
 		}
 		break;
 	case GLUT_KEY_RIGHT:
 		if (pacman.x != TAB_SIZE - 1 && board.haveCube(pacman.x + 1, pacman.y)) {
-			pacman.x += 1;
+			pacman.x++;
 		}
 		break;
 	case GLUT_KEY_LEFT:
 		if (pacman.x != 0 && board.haveCube(pacman.x - 1, pacman.y)) {
-			pacman.x -= 1;
+			pacman.x--;
 		}
 		break;
 	}
@@ -88,6 +99,6 @@ void main(int argc, char** argv) {
 	//glutKeyboardFunc(teclas);
 	glutSpecialFunc(specialKeyboard);
 	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
-	//glutTimerFunc(timeUpdate, update, timeUpdate);
+	glutTimerFunc(timeUpdate, update, timeUpdate);
 	glutMainLoop();
 }

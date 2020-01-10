@@ -11,6 +11,8 @@ public:
 
 	Ghost();
 
+	void randomMove();
+
 	void translatePosition();
 
 	void draw();
