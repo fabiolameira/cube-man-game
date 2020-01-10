@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <gl/glut.h>
 #include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"

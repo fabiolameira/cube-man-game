@@ -4,7 +4,6 @@
 
 class Pacman {
 public:
-
 	Cube cube;
 	int x, y;
 	float scale;

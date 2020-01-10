@@ -4,7 +4,6 @@
 
 class Ghost {
 public:
-
 	Cube cube;
 	int x, y;
 	float scale;

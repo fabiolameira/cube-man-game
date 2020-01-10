@@ -1,4 +1,3 @@
-
 #include <gl/glut.h>
 #include "Pacman.h"
 extern const int TAB_SIZE;
@@ -14,7 +13,7 @@ Pacman::Pacman(int x, int y) {
 void Pacman::move(int key) {
 	switch (key) {
 	case GLUT_KEY_UP:
-		if (this->y != TAB_SIZE) {
+		if (this->y != TAB_SIZE - 1) {
 			this->y += 1;
 		}
 		break;
@@ -24,7 +23,7 @@ void Pacman::move(int key) {
 		}
 		break;
 	case GLUT_KEY_RIGHT:
-		if (this->x != TAB_SIZE) {
+		if (this->x != TAB_SIZE - 1) {
 			this->x += 1;
 		}
 		break;
