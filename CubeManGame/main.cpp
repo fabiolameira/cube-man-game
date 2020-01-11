@@ -1,12 +1,20 @@
-#include <GL/glut.h>
+#include <gl/glut.h>
+#include "Board.h"
 #include "Pacman.h"
+#include "Ghost.h"
 
+
+// Constantes globais
+extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
+extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
 
 // Variaveis globais
-extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
-extern const int TAB_SIZE = 10; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
+int timeUpdate = 500;
+
 
 Pacman pacman = Pacman(1, 1);
+Ghost ghost = Ghost();
+Board board = Board();
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -14,12 +22,14 @@ void display() {
 	glLoadIdentity();
 
 	// Camara
-	gluLookAt(0, -5, 1, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	gluLookAt(0, -5, 5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
 	pacman.draw();
+	board.draw();
+	ghost.draw();
 
 	glFlush();
 
@@ -39,22 +49,37 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void update(int v) {
+
+	ghost.randomMove();
+
+	glutPostRedisplay();
+	glutTimerFunc(v, update, v);
+}
+
 void specialKeyboard(int key, int x, int y) {
 	switch (key) {
 	case GLUT_KEY_UP:
-		pacman.y += 1;
+		if (pacman.y != TAB_SIZE - 1 && board.haveCube(pacman.x, pacman.y + 1)) {
+			pacman.y++;
+		}
 		break;
 	case GLUT_KEY_DOWN:
-		pacman.y -= 1;
-		break;
-	case GLUT_KEY_LEFT:
-		pacman.x -= 1;
+		if (pacman.y != 0 && board.haveCube(pacman.x, pacman.y - 1)) {
+			pacman.y--;
+		}
 		break;
 	case GLUT_KEY_RIGHT:
-		pacman.x += 1;
+		if (pacman.x != TAB_SIZE - 1 && board.haveCube(pacman.x + 1, pacman.y)) {
+			pacman.x++;
+		}
+		break;
+	case GLUT_KEY_LEFT:
+		if (pacman.x != 0 && board.haveCube(pacman.x - 1, pacman.y)) {
+			pacman.x--;
+		}
 		break;
 	}
-
 	glutPostRedisplay();
 }
 
@@ -74,6 +99,6 @@ void main(int argc, char** argv) {
 	//glutKeyboardFunc(teclas);
 	glutSpecialFunc(specialKeyboard);
 	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
-	//glutTimerFunc(timeUpdate, update, timeUpdate);
+	glutTimerFunc(timeUpdate, update, timeUpdate);
 	glutMainLoop();
 }

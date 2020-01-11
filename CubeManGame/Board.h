@@ -1,9 +1,20 @@
+#pragma once
 #include <gl/glut.h>
+#include "Cube.h"
+extern const int TAB_SIZE;
+extern const int CELL_SIZE;
 
-class Board {
+class Board : public Cube {
 public:
-	int sizeX, sizeY;
+	Cube cube;
+    bool matrix[12][12];
 
-	Board(int, int);
+	Board();
+
+	bool haveCube(int x, int y);
+
+	void map();
+
+	void draw();
 
 };
