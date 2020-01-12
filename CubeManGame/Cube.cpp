@@ -12,6 +12,11 @@ Cube::Cube(float red, float green, float blue) {
 	this->color[1] = green;
 	this->color[2] = blue;
 }
+void Cube::setColor(float red, float green, float blue){
+this->color[0] = red;
+this->color[1] = green;
+this->color[2] = blue;
+}
 
 void Cube::polygon(int a, int b, int c, int d) {
 	glBegin(GL_POLYGON);
