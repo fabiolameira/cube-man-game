@@ -19,6 +19,8 @@ public:
 
 	Cube();
 
+	void setColor(float red, float green, float blue);
+
 	Cube(float red, float green, float blue);
 
 	void polygon(int a, int b, int c, int d);

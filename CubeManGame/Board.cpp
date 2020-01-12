@@ -21,7 +21,7 @@ void Board::map() {
 		}
     }
 	srand((int)time(0));
-	idMap = rand() % 5;
+	idMap = rand() % 4;
 	//switch (idMap) {
 	switch (1) {
 	case 1: 
@@ -93,6 +93,12 @@ void Board::map() {
 		this->matrix[11][11] = false;
 		this->matrix[11][10] = false;
 		break;
+
+	}
+	for (int x = 0; x < TAB_SIZE; x++) {
+		for (int y = 0; y < TAB_SIZE; y++) {
+			this->matrixStep[x][y] =!this->matrix[x][y];
+		}
 	}
 }
 
@@ -108,6 +114,14 @@ void Board::draw() {
 				glTranslatef(x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, 0);
 				glScalef(0.90, 0.90, 0.90);
 				glColor3f(1.0, 0.0, 0.0);
+				if (this->matrixStep[x][y])
+				{
+					cube.setColor(0, 1, 0);
+				}
+				else
+				{
+					cube.setColor(1, 0, 0);
+				}
 				cube.draw();
 				glPopMatrix();
 			}
@@ -115,4 +129,20 @@ void Board::draw() {
 	}
 
 	glPopMatrix();
+}
+
+void Board::toStep(int x, int y) {
+	this->matrixStep[x][y] = true;
+}
+
+bool Board::validateVictory() {
+	for (int x = 0; x < TAB_SIZE; x++) {
+		for (int y = 0; y < TAB_SIZE; y++) {
+			if (!matrixStep[x][y])
+			{
+				return false;
+			}			
+		}
+	}
+	return true;
 }

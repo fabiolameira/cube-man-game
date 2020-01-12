@@ -19,8 +19,21 @@ Ghost::Ghost() {
 	this->scale = 0.8;
 }
 
-void Ghost::randomMove() {
-	this->x += 1;
+void Ghost::randomMove(int xPacman,int yPacman) {
+	if (this->smart)
+	{
+
+	}
+	else {
+		this->x += 1;
+	}
+}
+void Ghost::smartMove(int xPacman, int yPacman) {
+	int xResulting = xPacman - x;
+	int yResulting = xPacman - x;
+	
+
+
 }
 
 void Ghost::translatePosition() {

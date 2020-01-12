@@ -50,8 +50,8 @@ void myReshape(int w, int h) {
 }
 
 void update(int v) {
-
-	ghost.randomMove();
+	board.draw();
+	ghost.randomMove(pacman.x, pacman.y);
 
 	glutPostRedisplay();
 	glutTimerFunc(v, update, v);
@@ -79,6 +79,11 @@ void specialKeyboard(int key, int x, int y) {
 			pacman.x--;
 		}
 		break;
+	}
+	board.toStep(pacman.x, pacman.y);
+	if (board.validateVictory())
+	{
+		exit(0);
 	}
 	glutPostRedisplay();
 }
