@@ -1,13 +1,12 @@
 #include <gl/glut.h>
-#include <time.h>
 #include "Ghost.h"
 
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
 
 Ghost::Ghost() {
-	srand((int)time(0));//gera uma nova srand  para os valores seren diferentes cada ves que seija otilisada
-	if ((rand() % 3) == 1) {
+	int randomNumber = rand() % 2;
+	if (randomNumber == 1) {
 		this->cube = Cube(1, 0, 1);
 		this->smart = true;
 	}

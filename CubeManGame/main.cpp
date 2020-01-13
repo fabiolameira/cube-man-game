@@ -9,10 +9,11 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 
 // Variaveis globais
 int timeUpdate = 500;
+int numberOffGhosts = 5;
 
-Pacman pacman = Pacman(1, 1);
-Ghost ghost = Ghost();
 Board board = Board();
+Pacman pacman = Pacman(1, 1);
+Ghost* ghosts = new Ghost[numberOffGhosts];
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -27,7 +28,10 @@ void display() {
 
 	pacman.draw();
 	board.draw();
-	ghost.draw();
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].draw();
+	}
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.validateVictory()) {
@@ -53,8 +57,10 @@ void myReshape(int w, int h) {
 }
 
 void update(int v) {
-	board.draw();
-	ghost.move(pacman.x, pacman.y, board);
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].move(pacman.x, pacman.y, board);
+	}
 
 	glutPostRedisplay();
 	glutTimerFunc(v, update, v);
@@ -65,13 +71,8 @@ void specialKeyboard(int key, int x, int y) {
 	glutPostRedisplay();
 }
 
-void myInit() {
-
-}
-
 void main(int argc, char** argv) {
 	glutInit(&argc, argv);
-	myInit();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Cube-Man Game");

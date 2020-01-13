@@ -1,6 +1,6 @@
 #include <gl/glut.h>
-#include "Board.h"
 #include <time.h>
+#include "Board.h"
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
 
