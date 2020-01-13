@@ -25,13 +25,68 @@ void Board::map() {
 	//switch (idMap) {
 	switch (1) {
 	case 1: 
+		this->matrix[0][1] = false;
+		this->matrix[0][6] = false;
+		this->matrix[0][10] = false;
+		this->matrix[1][3] = false;
+		this->matrix[1][4] = false;
+		this->matrix[1][6] = false;
+		this->matrix[1][8] = false;
+		this->matrix[2][2] = false;
+		this->matrix[2][3] = false;
+		this->matrix[2][4] = false;
+		this->matrix[2][6] = false;
+		this->matrix[2][8] = false;
+		this->matrix[2][9] = false;
+		this->matrix[2][10] = false;
+		this->matrix[3][0] = false;
+		this->matrix[3][2] = false;
+		this->matrix[3][9] = false;
+		this->matrix[3][10] = false;
+		this->matrix[3][11] = false;
+		this->matrix[4][2] = false;
+		this->matrix[4][4] = false;
+		this->matrix[4][6] = false;
+		this->matrix[4][7] = false;
+		this->matrix[5][1] = false;
+		this->matrix[5][2] = false;
+		this->matrix[5][4] = false;
+		this->matrix[5][9] = false;
+		this->matrix[5][10] = false;
+		this->matrix[6][1] = false;
+		this->matrix[6][2] = false;
+		this->matrix[6][7] = false;
+		this->matrix[6][9] = false;
+		this->matrix[6][10] = false;
+		this->matrix[7][4] = false;
+		this->matrix[7][5] = false;
+		this->matrix[7][7] = false;
+		this->matrix[7][9] = false;
+		this->matrix[8][0] = false;
+		this->matrix[8][1] = false;
+		this->matrix[8][2] = false;
+		this->matrix[8][9] = false;
+		this->matrix[8][11] = false;
+		this->matrix[9][1] = false;
+		this->matrix[9][2] = false;
+		this->matrix[9][3] = false;
+		this->matrix[9][5] = false;
+		this->matrix[9][7] = false;
+		this->matrix[9][8] = false;
+		this->matrix[9][9] = false;
+		this->matrix[10][3] = false;
+		this->matrix[10][5] = false;
+		this->matrix[10][7] = false;
+		this->matrix[10][8] = false;
+		this->matrix[11][1] = false;
+		this->matrix[11][5] = false;
+		this->matrix[11][10] = false;
 		break;
 	case 2: 
 		break;
 	case 3:
 		break;
 	case 4:
-		//0
 		this->matrix[0][10] = false;
 		this->matrix[0][11] = false;
 		this->matrix[0][8] = false;
@@ -42,15 +97,11 @@ void Board::map() {
 		this->matrix[0][2] = false;
 		this->matrix[0][1] = false;
 		this->matrix[0][0] = false;
-		//1
 		this->matrix[1][11] = false;
 		this->matrix[1][0] = false;
-		//2
 		this->matrix[2][9] = false;
 		this->matrix[2][8] = false;
 		this->matrix[2][0] = false;
-
-		//3
 		this->matrix[3][9] = false;
 		this->matrix[3][8] = false;
 		this->matrix[3][5] = false;
@@ -59,35 +110,27 @@ void Board::map() {
 		this->matrix[3][2] = false;
 		this->matrix[3][1] = false;
 		this->matrix[3][0] = false;
-		//4
 		this->matrix[4][11] = false;
 		this->matrix[4][5] = false;
 		this->matrix[4][3] = false;
-		//5
 		this->matrix[5][11] = false;
 		this->matrix[5][10] = false;
 		this->matrix[5][5] = false;
-		//6
 		this->matrix[6][2] = false;
-		//7
 		this->matrix[7][2] = false;
 		this->matrix[7][3] = false;
-		//8
 		this->matrix[8][11] = false;
 		this->matrix[8][10] = false;
 		this->matrix[8][9] = false;
 		this->matrix[8][8] = false;
 		this->matrix[8][2] = false;
-		//10
 		this->matrix[9][8] = false;
 		this->matrix[9][5] = false;
 		this->matrix[9][4] = false;
-		//11
 		this->matrix[10][1] = false;
 		this->matrix[10][5] = false;
 		this->matrix[10][4] = false;
 		this->matrix[10][11] = false;
-		//12
 		this->matrix[11][1] = false;
 		this->matrix[11][2] = false;
 		this->matrix[11][11] = false;
