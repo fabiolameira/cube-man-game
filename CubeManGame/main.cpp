@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"
+#include "Camera.h"
 
 // Constantes globais
 extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
@@ -12,6 +13,7 @@ int timeUpdate = 500;
 int numberOffGhosts = 5;
 
 Board board = Board();
+Camera camera = Camera();
 Pacman pacman = Pacman(1, 1);
 Ghost* ghosts = new Ghost[numberOffGhosts];
 
@@ -21,7 +23,7 @@ void display() {
 	glLoadIdentity();
 
 	// Camara
-	gluLookAt(0, -5, 5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	gluLookAt(camera.x, camera.y, camera.z, camera.lookX, camera.lookY, camera.lookZ, 0.0, 0.0, 1.0);
 
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
