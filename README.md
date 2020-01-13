@@ -1,2 +1,3 @@
 # CubeManGame
-Git repo: https://github.com/fabiolameira/CubeManGame
+Github repo: https://github.com/fabiolameira/CubeManGame
+Gitlab repo: https://gitlab.com/fabiolameira/CubeManGame
