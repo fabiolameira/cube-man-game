@@ -1,6 +1,7 @@
 #pragma once
 #include <gl/glut.h>
 #include "Cube.h"
+#include "Board.h"
 
 class Ghost {
 public:
@@ -13,6 +14,7 @@ public:
 
 	void draw();
 	void translatePosition();
-	void randomMove(int xPacman, int yPacman);
-	void smartMove(int xPacman,int yPacman);
+	void move(int xPacman, int yPacman, Board board);
+	void smartMove(int xPacman, int yPacman);
+	void randomMove(Board board);
 };

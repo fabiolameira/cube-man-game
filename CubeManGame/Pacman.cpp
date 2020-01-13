@@ -22,3 +22,28 @@ void Pacman::draw() {
 	this->cube.draw();
 	glPopMatrix();
 }
+
+void Pacman::move(int key, Board board) {
+	switch (key) {
+	case GLUT_KEY_UP:
+		if (this->y != TAB_SIZE - 1 && board.haveCube(this->x, this->y + 1)) {
+			this->y++;
+		}
+		break;
+	case GLUT_KEY_DOWN:
+		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
+			this->y--;
+		}
+		break;
+	case GLUT_KEY_RIGHT:
+		if (this->x != TAB_SIZE - 1 && board.haveCube(this->x + 1, this->y)) {
+			this->x++;
+		}
+		break;
+	case GLUT_KEY_LEFT:
+		if (this->x != 0 && board.haveCube(this->x - 1, this->y)) {
+			this->x--;
+		}
+		break;
+	}
+}

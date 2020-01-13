@@ -3,14 +3,12 @@
 #include "Pacman.h"
 #include "Ghost.h"
 
-
 // Constantes globais
 extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
 extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadrado. TAB_SIZE tem que ser par (facilita o alinhamento).
 
 // Variaveis globais
 int timeUpdate = 500;
-
 
 Pacman pacman = Pacman(1, 1);
 Ghost ghost = Ghost();
@@ -30,6 +28,11 @@ void display() {
 	pacman.draw();
 	board.draw();
 	ghost.draw();
+
+	board.toStep(pacman.x, pacman.y);
+	if (board.validateVictory()) {
+		exit(0);
+	}
 
 	glFlush();
 
@@ -51,40 +54,14 @@ void myReshape(int w, int h) {
 
 void update(int v) {
 	board.draw();
-	ghost.randomMove(pacman.x, pacman.y);
+	ghost.move(pacman.x, pacman.y, board);
 
 	glutPostRedisplay();
 	glutTimerFunc(v, update, v);
 }
 
 void specialKeyboard(int key, int x, int y) {
-	switch (key) {
-	case GLUT_KEY_UP:
-		if (pacman.y != TAB_SIZE - 1 && board.haveCube(pacman.x, pacman.y + 1)) {
-			pacman.y++;
-		}
-		break;
-	case GLUT_KEY_DOWN:
-		if (pacman.y != 0 && board.haveCube(pacman.x, pacman.y - 1)) {
-			pacman.y--;
-		}
-		break;
-	case GLUT_KEY_RIGHT:
-		if (pacman.x != TAB_SIZE - 1 && board.haveCube(pacman.x + 1, pacman.y)) {
-			pacman.x++;
-		}
-		break;
-	case GLUT_KEY_LEFT:
-		if (pacman.x != 0 && board.haveCube(pacman.x - 1, pacman.y)) {
-			pacman.x--;
-		}
-		break;
-	}
-	board.toStep(pacman.x, pacman.y);
-	if (board.validateVictory())
-	{
-		exit(0);
-	}
+	pacman.move(key, board);
 	glutPostRedisplay();
 }
 
@@ -94,11 +71,10 @@ void myInit() {
 
 void main(int argc, char** argv) {
 	glutInit(&argc, argv);
-
+	myInit();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Cube-Man Game");
-	myInit();
 	glutReshapeFunc(myReshape);
 	glutDisplayFunc(display);
 	//glutKeyboardFunc(teclas);

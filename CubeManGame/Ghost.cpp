@@ -1,6 +1,7 @@
 #include <gl/glut.h>
 #include <time.h>
 #include "Ghost.h"
+
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
 
@@ -19,21 +20,44 @@ Ghost::Ghost() {
 	this->scale = 0.8;
 }
 
-void Ghost::randomMove(int xPacman,int yPacman) {
-	if (this->smart)
-	{
-
+void Ghost::move(int xPacman, int yPacman, Board board) {
+	if (this->smart) {
+		this->smartMove(xPacman, yPacman);
 	}
 	else {
-		this->x += 1;
+		this->randomMove(board);
 	}
 }
+
 void Ghost::smartMove(int xPacman, int yPacman) {
 	int xResulting = xPacman - x;
 	int yResulting = xPacman - x;
-	
+}
 
-
+void Ghost::randomMove(Board board) {
+	int direction = rand() % (103 - 100 + 1) + 100; //100-Left; 101-Up; 102-Rigth; 103-Down
+	switch (direction) {
+	case 100:
+		if (this->x != 0 && board.haveCube(this->x - 1, this->y)) {
+			this->x--;
+		}
+		break;
+	case 101:
+		if (this->y != TAB_SIZE - 1 && board.haveCube(this->x, this->y + 1)) {
+			this->y++;
+		}
+		break;
+	case 102:
+		if (this->x != TAB_SIZE - 1 && board.haveCube(this->x + 1, this->y)) {
+			this->x++;
+		}
+		break;
+	case 103:
+		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
+			this->y--;
+		}
+		break;
+	}
 }
 
 void Ghost::translatePosition() {

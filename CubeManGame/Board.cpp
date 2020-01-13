@@ -138,8 +138,7 @@ void Board::toStep(int x, int y) {
 bool Board::validateVictory() {
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
-			if (!matrixStep[x][y])
-			{
+			if (!matrixStep[x][y]) {
 				return false;
 			}			
 		}
