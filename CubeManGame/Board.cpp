@@ -154,15 +154,13 @@ void Board::draw() {
 		for (int y = 0; y < TAB_SIZE; y++) {
 			if (haveCube(x, y)) {
 				glPushMatrix();
-				glTranslatef(x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, 0);
-				glScalef(0.90, 0.90, 0.90);
+				glTranslatef(x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, 1);
+				glScalef(0.90, 0.90, 0.20);
 				glColor3f(1.0, 0.0, 0.0);
-				if (this->matrixStep[x][y])
-				{
+				if (this->matrixStep[x][y]) {
 					cube.setColor(0, 1, 0);
 				}
-				else
-				{
+				else {
 					cube.setColor(1, 0, 0);
 				}
 				cube.draw();
