@@ -84,8 +84,8 @@ void mouseClick(int button, int state, int x, int y) {
 
 void mouseMove(int x, int y) {
 	if (rotate) {
-		theta += (x - oldX) * 0.01f;
-		phi += (y - oldY) * 0.01f;
+		theta += (x - oldX) * 0.002f;
+		phi += (y - oldY) * 0.002f;
 	}
 	oldX = x;
 	oldY = y;

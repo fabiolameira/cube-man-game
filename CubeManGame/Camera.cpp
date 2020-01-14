@@ -9,10 +9,10 @@ Camera::Camera() {
 	this->lookX = 0.0;
 	this->lookY = 0.0;
 	this->lookZ = 0.0;
-	this->distance = 8;
+	this->distance = 6;
 }
 
-void Camera::move(float phi, float theta) {
+void Camera::move(float phi, float theta) {	
 	this->x = this->lookX + this->distance * cos(phi) * sin(theta);
 	this->y = this->lookY + this->distance * sin(phi) * sin(theta);
 	this->z = this->lookZ + this->distance * cos(theta);
