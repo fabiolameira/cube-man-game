@@ -1,4 +1,6 @@
 #include <gl/glut.h>
+#include <stdlib.h> 
+#include <stdio.h>
 #include "Ghost.h"
 
 extern const int TAB_SIZE;
@@ -19,18 +21,165 @@ Ghost::Ghost() {
 	this->scale = 0.8;
 }
 
-void Ghost::move(int xPacman, int yPacman, Board board) {
-	if (this->smart) {
-		this->smartMove(xPacman, yPacman);
+bool Ghost::validateLoss(int xPacman, int yPacman) {
+	if (this->x==xPacman&& this->y == yPacman){
+		return true;
+	}else if (this->x == xPacman+1 && this->y == yPacman){
+			return true;
+	}else if (this->x == xPacman-1 && this->y == yPacman){
+		return true;
+	}else if (this->x == xPacman && this->y == yPacman-1){
+		return true;
+	}else if (this->x == xPacman && this->y == yPacman-1){
+		return true;
+	}else{
+		return false;
 	}
-	else {
-		this->randomMove(board);
+	
+
+}
+
+
+void Ghost::move(int xPacman, int yPacman, Board board) {
+	if (!validateLoss(xPacman, yPacman)){
+		if (this->smart) {
+			smartMove(xPacman, yPacman, board);
+		}
+		else {
+			randomMove(board);
+		}
+	}
+	else{
+		printf("---==YOU'RE A LOSER==---");
+		printf(" ");
+		printf(" ");
+		exit(0);
 	}
 }
 
-void Ghost::smartMove(int xPacman, int yPacman) {
-	int xResulting = xPacman - x;
-	int yResulting = xPacman - x;
+void Ghost::smartMove(int xPacman, int yPacman, Board board) {
+	int xResulting = xPacman-this->x;
+	int yResulting = yPacman-this->y;
+	bool muve = false;
+	int i = 0;
+	while (!muve){
+		if (abs(xResulting)>= abs(yResulting)){
+			if (xResulting>0){
+				if (this->x != 0 && board.haveCube(this->x + 1, this->y)) {
+					this->x++;
+					muve = true;
+				}else{
+					i++;
+					int aux;
+					switch (i) {
+						case 1:
+							aux = xResulting;
+							xResulting = yResulting;
+							yResulting = aux;
+						break;
+						case 2:
+							xResulting = xResulting*-1;
+							yResulting = xResulting*-1;
+						break;
+						case 3:
+							aux = xResulting;
+							xResulting = yResulting;
+							yResulting = aux;
+						break;
+						case 4:
+							muve = true;
+							break;
+					}
+				}
+			}
+			else {
+				if (this->x != TAB_SIZE-1 && board.haveCube(this->x -1, this->y)) {
+					this->x--;
+					muve = true;
+				}else {
+					i++;
+					int aux;
+					switch (i) {
+					case 1:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 2:
+						xResulting = xResulting * -1;
+						yResulting = xResulting * -1;
+						break;
+					case 3:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 4:
+						muve = true;
+						break;
+					}
+				}
+			}
+		}
+		else{
+			if (yResulting > 0) {
+				if (this->y != 0 && board.haveCube(this->x, this->y+1)) {
+					this->y++;
+					muve = true;
+				}else {
+					i++;
+					int aux;
+					switch (i) {
+					case 1:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 2:
+						xResulting = xResulting * -1;
+						yResulting = xResulting * -1;
+						break;
+					case 3:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 4:
+						muve = true;
+						break;
+					}
+				}
+			}
+			else {
+				if (this->y != TAB_SIZE-1 && board.haveCube(this->x, this->y-1)) {
+					this->y--;
+					muve = true;
+				}else {
+					i++;
+					int aux;
+					switch (i) {
+					case 1:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 2:
+						xResulting = xResulting * -1;
+						yResulting = xResulting * -1;
+						break;
+					case 3:
+						aux = xResulting;
+						xResulting = yResulting;
+						yResulting = aux;
+						break;
+					case 4:
+						muve = true;
+						break;
+					}
+				}
+			}
+		}
+	}
 }
 
 void Ghost::randomMove(Board board) {

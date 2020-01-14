@@ -1,4 +1,6 @@
 #include <gl/glut.h>
+#include <math.h>
+#include <stdio.h>
 #include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"
@@ -42,6 +44,9 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.validateVictory()) {
+		printf("---==YOU'RE A WINNER==---");
+		printf(" ");
+		printf(" ");
 		exit(0);
 	}
 
