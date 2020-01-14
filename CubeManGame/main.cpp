@@ -1,4 +1,5 @@
 #include <gl/glut.h>
+#include <math.h>
 #include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"
@@ -12,6 +13,13 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 int timeUpdate = 500;
 int numberOffGhosts = 5;
 
+//Camera Test
+int oldX, oldY;
+bool rotate = false;
+float theta = 0, phi = 0, distance = 8;
+float eyeX = 0, eyeY = 0, eyeZ = 1;
+float pickObjX = 0.0, pickObjY = 0.0, pickObjZ = 0.0;
+
 Board board = Board();
 Camera camera = Camera();
 Pacman pacman = Pacman(1, 1);
@@ -23,7 +31,13 @@ void display() {
 	glLoadIdentity();
 
 	// Camara
-	gluLookAt(camera.x, camera.y, camera.z, camera.lookX, camera.lookY, camera.lookZ, 0.0, 0.0, 1.0);
+	//gluLookAt(camera.x, camera.y, camera.z, camera.lookX, camera.lookY, camera.lookZ, 0.0, 0.0, 1.0);
+	eyeX = pickObjX + distance * cos(phi) * sin(theta);
+	eyeY = pickObjY + distance * sin(phi) * sin(theta);
+	eyeZ = pickObjZ + distance * cos(theta);
+
+	//assuming modelview matrix mode is set 
+	gluLookAt(eyeX, eyeY, eyeZ, pickObjX, pickObjY, pickObjZ, 0, 1, 0);
 
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
@@ -68,6 +82,26 @@ void update(int v) {
 	glutTimerFunc(v, update, v);
 }
 
+void mouseClick(int button, int state, int x, int y) {
+	rotate = false;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		oldX = x;
+		oldY = y;
+		rotate = true;
+	}
+}
+
+void mouseMove(int x, int y) {
+	if (rotate) {
+		//you might need to adjust this multiplier(0.01)
+		theta += (x - oldX) * 0.01f;
+		phi += (y - oldY) * 0.01f;
+	}
+	oldX = x;
+	oldY = y;
+	glutPostRedisplay();
+}
+
 void specialKeyboard(int key, int x, int y) {
 	pacman.move(key, board);
 	glutPostRedisplay();
@@ -80,7 +114,8 @@ void main(int argc, char** argv) {
 	glutCreateWindow("Cube-Man Game");
 	glutReshapeFunc(myReshape);
 	glutDisplayFunc(display);
-	//glutKeyboardFunc(teclas);
+	glutMouseFunc(mouseClick);
+	glutMotionFunc(mouseMove);
 	glutSpecialFunc(specialKeyboard);
 	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
 	glutTimerFunc(timeUpdate, update, timeUpdate);
