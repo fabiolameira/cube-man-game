@@ -5,7 +5,9 @@ class Camera {
 public:
 	float x, y, z;
 	float lookX, lookY, lookZ;
+	float distance;
 
 	Camera();
 
+	void move(float phi, float theta);
 };
