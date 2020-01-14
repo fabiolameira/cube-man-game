@@ -39,7 +39,6 @@ bool Ghost::validateLoss(int xPacman, int yPacman) {
 
 }
 
-
 void Ghost::move(int xPacman, int yPacman, Board board) {
 	if (!validateLoss(xPacman, yPacman)){
 		if (this->smart) {
@@ -78,15 +77,6 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 							yResulting = aux;
 						break;
 						case 2:
-							xResulting = xResulting*-1;
-							yResulting = xResulting*-1;
-						break;
-						case 3:
-							aux = xResulting;
-							xResulting = yResulting;
-							yResulting = aux;
-						break;
-						case 4:
 							muve = true;
 							break;
 					}
@@ -106,15 +96,6 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 						yResulting = aux;
 						break;
 					case 2:
-						xResulting = xResulting * -1;
-						yResulting = xResulting * -1;
-						break;
-					case 3:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
-						break;
-					case 4:
 						muve = true;
 						break;
 					}
@@ -136,15 +117,6 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 						yResulting = aux;
 						break;
 					case 2:
-						xResulting = xResulting * -1;
-						yResulting = xResulting * -1;
-						break;
-					case 3:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
-						break;
-					case 4:
 						muve = true;
 						break;
 					}
@@ -164,15 +136,6 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 						yResulting = aux;
 						break;
 					case 2:
-						xResulting = xResulting * -1;
-						yResulting = xResulting * -1;
-						break;
-					case 3:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
-						break;
-					case 4:
 						muve = true;
 						break;
 					}
@@ -183,26 +146,36 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 }
 
 void Ghost::randomMove(Board board) {
-	int direction = rand() % (103 - 100 + 1) + 100; //100-Left; 101-Up; 102-Rigth; 103-Down
-	switch (direction) {
+	switch (this->direction) {
 	case 100:
 		if (this->x != 0 && board.haveCube(this->x - 1, this->y)) {
 			this->x--;
+		}
+		else {
+			this->direction = rand() % (103 - 100 + 1) + 100;
 		}
 		break;
 	case 101:
 		if (this->y != TAB_SIZE - 1 && board.haveCube(this->x, this->y + 1)) {
 			this->y++;
 		}
+		else {
+			this->direction = rand() % (103 - 100 + 1) + 100;
+		}
 		break;
 	case 102:
 		if (this->x != TAB_SIZE - 1 && board.haveCube(this->x + 1, this->y)) {
 			this->x++;
 		}
+		else {
+			this->direction = rand() % (103 - 100 + 1) + 100;
+		}
 		break;
 	case 103:
 		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
 			this->y--;
+		}else{
+			this->direction = rand() % (103 - 100 + 1) + 100;
 		}
 		break;
 	}

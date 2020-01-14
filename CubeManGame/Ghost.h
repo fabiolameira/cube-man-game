@@ -9,7 +9,7 @@ public:
 	int x, y;
 	float scale;
 	bool smart;
-
+	int direction = rand() % (103 - 100 + 1) + 100;
 	Ghost();
 
 	void draw();
