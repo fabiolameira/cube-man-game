@@ -10,7 +10,12 @@ Board::Board() {
 }
 
 bool Board::haveCube(int x, int y) {
-	return this->matrix[x][y];
+	if ((x >= 0 && x < TAB_SIZE) && (y >= 0 && y < TAB_SIZE)) {
+		return this->matrix[x][y];
+	}
+	else {
+		return false;
+	}
 }
 
 void Board::map() {
@@ -23,7 +28,7 @@ void Board::map() {
 	srand((int)time(0));
 	idMap = rand() % 4;
 	switch (idMap) {
-	//switch (1) {
+	//switch (4) {
 	case 1: 
 		this->matrix[0][1] = false;
 		this->matrix[0][6] = false;
@@ -192,7 +197,7 @@ void Board::map() {
 	}
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
-			this->matrixStep[x][y] =!this->matrix[x][y];
+			this->matrixStep[x][y] = !this->matrix[x][y];
 		}
 	}
 }

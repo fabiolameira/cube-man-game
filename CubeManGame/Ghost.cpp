@@ -16,6 +16,7 @@ Ghost::Ghost() {
 		this->cube = Cube(0, 0, 1);
 		this->smart = false;
 	}
+
 	this->x = TAB_SIZE / 2;
 	this->y = TAB_SIZE / 2;
 	this->scale = 0.8;
@@ -72,7 +73,7 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 	while (!move){
 		if (abs(xResult)>= abs(yResult)){
 			if (xResult>0){
-				if (this->x != 0 && board.haveCube(this->x + 1, this->y)) {
+				if (this->x >= 0 && board.haveCube(this->x + 1, this->y)) {
 					this->x++;
 					move = true;
 				}else{
@@ -91,7 +92,7 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 				}
 			}
 			else {
-				if (this->x != TAB_SIZE-1 && board.haveCube(this->x -1, this->y)) {
+				if (this->x <= TAB_SIZE-1 && board.haveCube(this->x - 1, this->y)) {
 					this->x--;
 					move = true;
 				}else {
@@ -112,7 +113,7 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 		}
 		else{
 			if (yResult > 0) {
-				if (this->y != 0 && board.haveCube(this->x, this->y+1)) {
+				if (this->y >= 0 && board.haveCube(this->x, this->y + 1)) {
 					this->y++;
 					move = true;
 				}else {
@@ -131,7 +132,7 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 				}
 			}
 			else {
-				if (this->y != TAB_SIZE-1 && board.haveCube(this->x, this->y-1)) {
+				if (this->y <= TAB_SIZE-1 && board.haveCube(this->x, this->y - 1)) {
 					this->y--;
 					move = true;
 				}else {

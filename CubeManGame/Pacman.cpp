@@ -5,8 +5,8 @@ extern const int CELL_SIZE;
 
 Pacman::Pacman() {
 	this->cube = Cube(1, 1, 0);
-	this->x = 1;
-	this->y = 1;
+	this->x = 0;
+	this->y = 0;
 	this->scale = 0.8;
 }
 

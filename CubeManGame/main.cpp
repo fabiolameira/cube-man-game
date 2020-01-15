@@ -28,7 +28,7 @@ void myInit() {
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
 	}
-	//pacman.randomPosition(board);
+	pacman.randomPosition(board);
 }
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
