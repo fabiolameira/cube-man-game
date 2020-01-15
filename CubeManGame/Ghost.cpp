@@ -22,21 +22,21 @@ Ghost::Ghost() {
 }
 
 void Ghost::randomPosition(Board board) {
-	bool exist=false;
+	bool exist = false;
 	while (!exist) {
-		this->x = rand() % TAB_SIZE-1;
-		this->y = rand() % TAB_SIZE-1;
+		this->x = rand() % TAB_SIZE;
+		this->y = rand() % TAB_SIZE;
 		exist = board.haveCube(this->x, this->y);
 	}
 }
 
 
-bool Ghost::validateLoss(int xPacman, int yPacman) {
-	if (this->x==xPacman&& this->y == yPacman){
+bool Ghost::loseValidator(int xPacman, int yPacman) {
+	if (this->x == xPacman && this->y == yPacman){
 		return true;
-	}else if (this->x == xPacman+1 && this->y == yPacman){
+	}else if (this->x == xPacman + 1 && this->y == yPacman){
 			return true;
-	}else if (this->x == xPacman-1 && this->y == yPacman){
+	}else if (this->x == xPacman - 1 && this->y == yPacman){
 		return true;
 	}else if (this->x == xPacman && this->y == yPacman-1){
 		return true;
@@ -45,12 +45,10 @@ bool Ghost::validateLoss(int xPacman, int yPacman) {
 	}else{
 		return false;
 	}
-	
-
 }
 
 void Ghost::move(int xPacman, int yPacman, Board board) {
-	if (!validateLoss(xPacman, yPacman)){
+	if (!loseValidator(xPacman, yPacman)){
 		if (this->smart) {
 			smartMove(xPacman, yPacman, board);
 		}
@@ -67,27 +65,27 @@ void Ghost::move(int xPacman, int yPacman, Board board) {
 }
 
 void Ghost::smartMove(int xPacman, int yPacman, Board board) {
-	int xResulting = xPacman-this->x;
-	int yResulting = yPacman-this->y;
-	bool muve = false;
+	int xResult = xPacman - this->x;
+	int yResult = yPacman - this->y;
+	bool move = false;
 	int i = 0;
-	while (!muve){
-		if (abs(xResulting)>= abs(yResulting)){
-			if (xResulting>0){
+	while (!move){
+		if (abs(xResult)>= abs(yResult)){
+			if (xResult>0){
 				if (this->x != 0 && board.haveCube(this->x + 1, this->y)) {
 					this->x++;
-					muve = true;
+					move = true;
 				}else{
 					i++;
 					int aux;
 					switch (i) {
 						case 1:
-							aux = xResulting;
-							xResulting = yResulting;
-							yResulting = aux;
+							aux = xResult;
+							xResult = yResult;
+							yResult = aux;
 						break;
 						case 2:
-							muve = true;
+							move = true;
 							break;
 					}
 				}
@@ -95,39 +93,39 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 			else {
 				if (this->x != TAB_SIZE-1 && board.haveCube(this->x -1, this->y)) {
 					this->x--;
-					muve = true;
+					move = true;
 				}else {
 					i++;
 					int aux;
 					switch (i) {
 					case 1:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
+						aux = xResult;
+						xResult = yResult;
+						yResult = aux;
 						break;
 					case 2:
-						muve = true;
+						move = true;
 						break;
 					}
 				}
 			}
 		}
 		else{
-			if (yResulting > 0) {
+			if (yResult > 0) {
 				if (this->y != 0 && board.haveCube(this->x, this->y+1)) {
 					this->y++;
-					muve = true;
+					move = true;
 				}else {
 					i++;
 					int aux;
 					switch (i) {
 					case 1:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
+						aux = xResult;
+						xResult = yResult;
+						yResult = aux;
 						break;
 					case 2:
-						muve = true;
+						move = true;
 						break;
 					}
 				}
@@ -135,18 +133,18 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 			else {
 				if (this->y != TAB_SIZE-1 && board.haveCube(this->x, this->y-1)) {
 					this->y--;
-					muve = true;
+					move = true;
 				}else {
 					i++;
 					int aux;
 					switch (i) {
 					case 1:
-						aux = xResulting;
-						xResulting = yResulting;
-						yResulting = aux;
+						aux = xResult;
+						xResult = yResult;
+						yResult = aux;
 						break;
 					case 2:
-						muve = true;
+						move = true;
 						break;
 					}
 				}
@@ -162,7 +160,7 @@ void Ghost::randomMove(Board board) {
 			this->x--;
 		}
 		else {
-			this->direction = rand() % (103 - 100 + 1) + 100;
+			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 101:
@@ -170,7 +168,7 @@ void Ghost::randomMove(Board board) {
 			this->y++;
 		}
 		else {
-			this->direction = rand() % (103 - 100 + 1) + 100;
+			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 102:
@@ -178,14 +176,14 @@ void Ghost::randomMove(Board board) {
 			this->x++;
 		}
 		else {
-			this->direction = rand() % (103 - 100 + 1) + 100;
+			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 103:
 		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
 			this->y--;
 		}else{
-			this->direction = rand() % (103 - 100 + 1) + 100;
+			this->direction = rand() % 4 + 100;
 		}
 		break;
 	}

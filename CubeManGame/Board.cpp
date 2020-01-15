@@ -228,7 +228,7 @@ void Board::toStep(int x, int y) {
 	this->matrixStep[x][y] = true;
 }
 
-bool Board::validateVictory() {
+bool Board::victoryValidator() {
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
 			if (!matrixStep[x][y]) {

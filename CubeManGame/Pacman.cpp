@@ -26,8 +26,8 @@ void Pacman::draw() {
 void Pacman::randomPosition(Board board) {
 	bool exist = false;
 	while (!exist) {
-		this->x = rand() % TAB_SIZE ;
-		this->y = rand() % TAB_SIZE ;
+		this->x = rand() % TAB_SIZE;
+		this->y = rand() % TAB_SIZE;
 		exist = board.haveCube(this->x, this->y);
 	}
 }

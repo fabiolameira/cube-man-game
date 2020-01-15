@@ -22,12 +22,13 @@ float theta = 0, phi = 0;
 Board board = Board();
 Camera camera = Camera();
 Pacman pacman = Pacman();
-Ghost*ghosts = new Ghost[numberOffGhosts];
+Ghost* ghosts = new Ghost[numberOffGhosts];
+
 void myInit() {
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
 	}
-	pacman.randomPosition(board);
+	//pacman.randomPosition(board);
 }
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -48,7 +49,7 @@ void display() {
 	}
 
 	board.toStep(pacman.x, pacman.y);
-	if (board.validateVictory()) {
+	if (board.victoryValidator()) {
 		printf("---==YOU'RE A WINNER==---");
 		printf(" ");
 		printf(" ");
