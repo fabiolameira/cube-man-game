@@ -1,6 +1,7 @@
 #pragma once
 #include <gl/glut.h>
 #include "Cube.h"
+#include "Board.h"
 
 class Pacman {
 public:
@@ -8,10 +9,10 @@ public:
 	int x, y;
 	float scale;
 
-	Pacman(int x, int y);
-
+	Pacman();
+	void randomPosition(Board board);
 	void translatePosition();
-
 	void draw();
+	void move(int key, Board board);
 
 };

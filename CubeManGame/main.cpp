@@ -1,8 +1,10 @@
 #include <gl/glut.h>
+#include <math.h>
+#include <stdio.h>
 #include "Board.h"
 #include "Pacman.h"
 #include "Ghost.h"
-
+#include "Camera.h"
 
 // Constantes globais
 extern const int CELL_SIZE = 2; // Tamanho da box (centrada na origem) onde as figuras são desenhadas.
@@ -10,26 +12,49 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 
 // Variaveis globais
 int timeUpdate = 500;
+int numberOffGhosts = 5;
 
+//Camera rotatian
+int oldX, oldY;
+bool rotate = false;
+float theta = 0, phi = 0;
 
-Pacman pacman = Pacman(1, 1);
-Ghost ghost = Ghost();
 Board board = Board();
+Camera camera = Camera();
+Pacman pacman = Pacman();
+Ghost* ghosts = new Ghost[numberOffGhosts];
 
+void myInit() {
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].randomPosition(board);
+	}
+	//pacman.randomPosition(board);
+}
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	// Camara
-	gluLookAt(0, -5, 5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	camera.move(phi, theta);
 
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
 	pacman.draw();
 	board.draw();
-	ghost.draw();
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].draw();
+	}
+
+	board.toStep(pacman.x, pacman.y);
+	if (board.victoryValidator()) {
+		printf("---==YOU'RE A WINNER==---");
+		printf(" ");
+		printf(" ");
+		exit(0);
+	}
 
 	glFlush();
 
@@ -50,58 +75,49 @@ void myReshape(int w, int h) {
 }
 
 void update(int v) {
-	board.draw();
-	ghost.randomMove(pacman.x, pacman.y);
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].move(pacman.x, pacman.y, board);
+	}
 
 	glutPostRedisplay();
 	glutTimerFunc(v, update, v);
 }
 
-void specialKeyboard(int key, int x, int y) {
-	switch (key) {
-	case GLUT_KEY_UP:
-		if (pacman.y != TAB_SIZE - 1 && board.haveCube(pacman.x, pacman.y + 1)) {
-			pacman.y++;
-		}
-		break;
-	case GLUT_KEY_DOWN:
-		if (pacman.y != 0 && board.haveCube(pacman.x, pacman.y - 1)) {
-			pacman.y--;
-		}
-		break;
-	case GLUT_KEY_RIGHT:
-		if (pacman.x != TAB_SIZE - 1 && board.haveCube(pacman.x + 1, pacman.y)) {
-			pacman.x++;
-		}
-		break;
-	case GLUT_KEY_LEFT:
-		if (pacman.x != 0 && board.haveCube(pacman.x - 1, pacman.y)) {
-			pacman.x--;
-		}
-		break;
+void mouseClick(int button, int state, int x, int y) {
+	rotate = false;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		oldX = x;
+		oldY = y;
+		rotate = true;
 	}
-	board.toStep(pacman.x, pacman.y);
-	if (board.validateVictory())
-	{
-		exit(0);
+}
+
+void mouseMove(int x, int y) {
+	if (rotate) {
+		theta += (x - oldX) * 0.002f;
+		phi += (y - oldY) * 0.002f;
 	}
+	oldX = x;
+	oldY = y;
 	glutPostRedisplay();
 }
 
-void myInit() {
-
+void specialKeyboard(int key, int x, int y) {
+	pacman.move(key, board);
+	glutPostRedisplay();
 }
 
 void main(int argc, char** argv) {
+	myInit();
 	glutInit(&argc, argv);
-
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Cube-Man Game");
-	myInit();
 	glutReshapeFunc(myReshape);
 	glutDisplayFunc(display);
-	//glutKeyboardFunc(teclas);
+	glutMouseFunc(mouseClick);
+	glutMotionFunc(mouseMove);
 	glutSpecialFunc(specialKeyboard);
 	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
 	glutTimerFunc(timeUpdate, update, timeUpdate);

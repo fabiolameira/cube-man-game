@@ -14,7 +14,7 @@ public:
 	bool haveCube(int x, int y);
 	void toStep(int x, int y);
 	void map();
-	bool validateVictory();
+	bool victoryValidator();
 	void draw();
 
 };
