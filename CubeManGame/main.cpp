@@ -21,9 +21,14 @@ float theta = 0, phi = 0;
 
 Board board = Board();
 Camera camera = Camera();
-Pacman pacman = Pacman(1, 1);
-Ghost* ghosts = new Ghost[numberOffGhosts];
-
+Pacman pacman = Pacman();
+Ghost*ghosts = new Ghost[numberOffGhosts];
+void myInit() {
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].randomPosition(board);
+	}
+	pacman.randomPosition(board);
+}
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -103,6 +108,7 @@ void specialKeyboard(int key, int x, int y) {
 }
 
 void main(int argc, char** argv) {
+	myInit();
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);

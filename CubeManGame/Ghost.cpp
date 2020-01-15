@@ -21,6 +21,16 @@ Ghost::Ghost() {
 	this->scale = 0.8;
 }
 
+void Ghost::randomPosition(Board board) {
+	bool exist=false;
+	while (!exist) {
+		this->x = rand() % TAB_SIZE-1;
+		this->y = rand() % TAB_SIZE-1;
+		exist = board.haveCube(this->x, this->y);
+	}
+}
+
+
 bool Ghost::validateLoss(int xPacman, int yPacman) {
 	if (this->x==xPacman&& this->y == yPacman){
 		return true;

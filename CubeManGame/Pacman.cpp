@@ -3,10 +3,10 @@
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
 
-Pacman::Pacman(int x, int y) {
+Pacman::Pacman() {
 	this->cube = Cube(1, 1, 0);
-	this->x = x;
-	this->y = y;
+	this->x = 1;
+	this->y = 1;
 	this->scale = 0.8;
 }
 
@@ -23,6 +23,14 @@ void Pacman::draw() {
 	glPopMatrix();
 }
 
+void Pacman::randomPosition(Board board) {
+	bool exist = false;
+	while (!exist) {
+		this->x = rand() % TAB_SIZE ;
+		this->y = rand() % TAB_SIZE ;
+		exist = board.haveCube(this->x, this->y);
+	}
+}
 void Pacman::move(int key, Board board) {
 	switch (key) {
 	case GLUT_KEY_UP:

@@ -11,8 +11,8 @@ public:
 	bool smart;
 	int direction = rand() % (103 - 100 + 1) + 100;
 	Ghost();
-
 	void draw();
+	void randomPosition(Board board);
 	void translatePosition();
 	bool validateLoss(int xPacman, int yPacman);
 	void move(int xPacman, int yPacman, Board board);
