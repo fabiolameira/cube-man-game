@@ -12,9 +12,9 @@ Camera::Camera() {
 	this->distance = 6;
 }
 
-void Camera::move(float phi, float theta) {	
+void Camera::move(float phi, float theta) {
 	this->x = this->lookX + this->distance * cos(phi) * sin(theta);
 	this->y = this->lookY + this->distance * sin(phi) * sin(theta);
 	this->z = this->lookZ + this->distance * cos(theta);
-	gluLookAt(this->x, this->y, this->z, this->lookX, this->lookY, this->lookZ, 0, 1, 0);
+	gluLookAt(this->x, this->y, this->z, this->lookX, this->lookY, this->lookZ, 0, 1, 1);
 }

@@ -17,7 +17,7 @@ int numberOffGhosts = 5;
 //Camera rotatian
 int oldX, oldY;
 bool rotate = false;
-float theta = 0, phi = 0;
+float theta = 1, phi = -1.57;
 
 Board board = Board();
 Camera camera = Camera();
