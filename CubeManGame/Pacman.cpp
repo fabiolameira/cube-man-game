@@ -55,3 +55,24 @@ void Pacman::move(int key, Board board) {
 		break;
 	}
 }
+bool Pacman::loseValidator(int xGhosts, int yGhosts) {
+	if (this->x == xGhosts && this->y == yGhosts) {
+		return true;
+	}
+	else if (this->x == xGhosts + 1 && this->y == yGhosts) {
+		return true;
+	}
+	else if (this->x == xGhosts - 1 && this->y == yGhosts) {
+		return true;
+	}
+	else if (this->x == xGhosts && this->y == yGhosts - 1) {
+		return true;
+	}
+	else if (this->x == xGhosts && this->y == yGhosts - 1) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}

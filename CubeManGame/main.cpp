@@ -51,8 +51,6 @@ void display() {
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
 		printf("---==YOU'RE A WINNER==---");
-		printf(" ");
-		printf(" ");
 		exit(0);
 	}
 
@@ -106,6 +104,16 @@ void mouseMove(int x, int y) {
 void specialKeyboard(int key, int x, int y) {
 	pacman.move(key, board);
 	glutPostRedisplay();
+	for (int i = 0; i < numberOffGhosts; i++) {
+		if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)){
+			printf("---==YOU'RE A LOSER==---");
+			printf(" ");
+			printf(" ");
+			exit(0);
+
+		}
+	}
+
 }
 
 void main(int argc, char** argv) {
