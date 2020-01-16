@@ -28,7 +28,7 @@ void myInit() {
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
 	}
-	pacman.randomPosition(board);
+	//pacman.randomPosition(board);
 }
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -95,8 +95,8 @@ void mouseClick(int button, int state, int x, int y) {
 
 void mouseMove(int x, int y) {
 	if (rotate) {
-		theta += (x - oldX) * 0.002f;
-		phi += (y - oldY) * 0.002f;
+		phi += (x - oldX) * 0.002f;
+		theta += (y - oldY) * 0.002f;
 	}
 	oldX = x;
 	oldY = y;
