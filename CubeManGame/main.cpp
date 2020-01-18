@@ -89,6 +89,11 @@ void mouseClick(int button, int state, int x, int y) {
 		oldY = y;
 		rotate = true;
 	}
+
+	if (button == 3 || button == 4) {
+		camera.zoom(button);
+		glutPostRedisplay();
+	}
 }
 
 void mouseMove(int x, int y) {
