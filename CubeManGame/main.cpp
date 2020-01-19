@@ -26,11 +26,39 @@ Pacman pacman = Pacman();
 Ghost* ghosts = new Ghost[numberOffGhosts];
 
 void myInit() {
+	bool matrix[TAB_SIZE][TAB_SIZE];
+	for (int x = 0; x < TAB_SIZE; x++) {
+		for (int y = 0; y < TAB_SIZE; y++) {
+			matrix[x][y] = false;
+		}
+	}
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
+		matrix[ghosts[i].x][ghosts[i].y]=true;
 	}
-	pacman.randomPosition(board);
+	bool position=false;
+	while (!position) {
+		pacman.randomPosition(board);
+		position = true;
+		if (matrix[pacman.x][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x+1][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x-1][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x][pacman.y+1]){
+			position = false;
+		}
+		if (matrix[pacman.x][pacman.y-1]) {
+			position = false;
+		}
+	}
 }
+   
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
