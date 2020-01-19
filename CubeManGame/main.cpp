@@ -13,6 +13,7 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 // Variaveis globais
 int timeUpdate = 500;
 int numberOffGhosts = 5;
+bool paused = false;
 
 //Camera rotatian
 int oldX, oldY;
@@ -28,7 +29,7 @@ void myInit() {
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
 	}
-	//pacman.randomPosition(board);
+	pacman.randomPosition(board);
 }
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,11 +75,13 @@ void myReshape(int w, int h) {
 
 void update(int v) {
 
-	for (int i = 0; i < numberOffGhosts; i++) {
-		ghosts[i].move(pacman.x, pacman.y, board);
-	}
+	if (!paused) {
+		for (int i = 0; i < numberOffGhosts; i++) {
+			ghosts[i].move(pacman.x, pacman.y, board);
+		}
 
-	glutPostRedisplay();
+		glutPostRedisplay();
+	}
 	glutTimerFunc(v, update, v);
 }
 
@@ -107,18 +110,36 @@ void mouseMove(int x, int y) {
 }
 
 void specialKeyboard(int key, int x, int y) {
-	pacman.move(key, board);
-	glutPostRedisplay();
-	for (int i = 0; i < numberOffGhosts; i++) {
-		if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)){
-			printf("---==YOU'RE A LOSER==---");
-			printf(" ");
-			printf(" ");
-			exit(0);
+	if (!paused) {
+		pacman.move(key, board);
+		glutPostRedisplay();
+		for (int i = 0; i < numberOffGhosts; i++) {
+			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
+				printf("---==YOU'RE A LOSER==---");
+				printf(" ");
+				printf(" ");
+				exit(0);
 
+			}
 		}
 	}
+}
 
+void keyboard(unsigned char key, int x, int y) {
+	switch (key) {
+	case 'q':
+	case 'Q':
+		exit(0);
+		break;
+	case 'p':
+	case 'P':
+		paused = !paused;
+		break;
+	case 'r':
+	case 'R':
+		// Implementar RestartGame
+		break;
+	}
 }
 
 void main(int argc, char** argv) {
@@ -131,8 +152,9 @@ void main(int argc, char** argv) {
 	glutDisplayFunc(display);
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseMove);
+	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(specialKeyboard);
-	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
+	glEnable(GL_DEPTH_TEST);
 	glutTimerFunc(timeUpdate, update, timeUpdate);
 	glutMainLoop();
 }
