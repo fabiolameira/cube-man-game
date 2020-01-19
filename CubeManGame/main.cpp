@@ -13,6 +13,7 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 // Variaveis globais
 int timeUpdate = 500;
 int numberOffGhosts = 5;
+int pontuation = 0;
 bool paused = false;
 
 //Camera rotatian
@@ -60,6 +61,7 @@ void myInit() {
 
 void restartGame() {
 	if (paused) paused = !paused;
+	pontuation = 0;
 	board = Board();
 	myInit();
 }
@@ -85,7 +87,8 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("---==YOU'RE A WINNER==---");
+		printf("         ---==YOU'RE A WINNER==---\n");
+		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
 		exit(0);
 	}
 
@@ -145,13 +148,13 @@ void mouseMove(int x, int y) {
 
 void specialKeyboard(int key, int x, int y) {
 	if (!paused) {
+		pontuation++;
 		pacman.move(key, board);
 		glutPostRedisplay();
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
-				printf("---==YOU'RE A LOSER==---");
-				printf(" ");
-				printf(" ");
+				printf("      ---==YOU'RE A LOSER==---\n");
+				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
 				exit(0);
 
 			}
