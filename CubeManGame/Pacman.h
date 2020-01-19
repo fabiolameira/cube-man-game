@@ -11,6 +11,7 @@ public:
 
 	Pacman();
 	void randomPosition(Board board);
+	bool loseValidator(int xGhosts, int yGhosts);
 	void translatePosition();
 	void draw();
 	void move(int key, Board board);

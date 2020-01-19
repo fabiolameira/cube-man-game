@@ -13,11 +13,13 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 // Variaveis globais
 int timeUpdate = 500;
 int numberOffGhosts = 5;
+int pontuation = 0;
+bool paused = false;
 
 //Camera rotatian
 int oldX, oldY;
 bool rotate = false;
-float theta = 0, phi = 0;
+float theta = 1, phi = -1.57;
 
 Board board = Board();
 Camera camera = Camera();
@@ -25,11 +27,46 @@ Pacman pacman = Pacman();
 Ghost* ghosts = new Ghost[numberOffGhosts];
 
 void myInit() {
+	bool matrix[TAB_SIZE][TAB_SIZE];
+	for (int x = 0; x < TAB_SIZE; x++) {
+		for (int y = 0; y < TAB_SIZE; y++) {
+			matrix[x][y] = false;
+		}
+	}
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
+		matrix[ghosts[i].x][ghosts[i].y]=true;
 	}
-	pacman.randomPosition(board);
+	bool position=false;
+	while (!position) {
+		pacman.randomPosition(board);
+		position = true;
+		if (matrix[pacman.x][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x+1][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x-1][pacman.y]){
+			position = false;
+		}
+		if (matrix[pacman.x][pacman.y+1]){
+			position = false;
+		}
+		if (matrix[pacman.x][pacman.y-1]) {
+			position = false;
+		}
+	}
 }
+
+void restartGame() {
+	if (paused) paused = !paused;
+	pontuation = 0;
+	board = Board();
+	myInit();
+}
+   
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -50,9 +87,8 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("---==YOU'RE A WINNER==---");
-		printf(" ");
-		printf(" ");
+		printf("         ---==YOU'RE A WINNER==---\n");
+		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
 		exit(0);
 	}
 
@@ -76,11 +112,13 @@ void myReshape(int w, int h) {
 
 void update(int v) {
 
-	for (int i = 0; i < numberOffGhosts; i++) {
-		ghosts[i].move(pacman.x, pacman.y, board);
-	}
+	if (!paused) {
+		for (int i = 0; i < numberOffGhosts; i++) {
+			ghosts[i].move(pacman.x, pacman.y, board);
+		}
 
-	glutPostRedisplay();
+		glutPostRedisplay();
+	}
 	glutTimerFunc(v, update, v);
 }
 
@@ -91,12 +129,17 @@ void mouseClick(int button, int state, int x, int y) {
 		oldY = y;
 		rotate = true;
 	}
+
+	if (button == 3 || button == 4) {
+		camera.zoom(button);
+		glutPostRedisplay();
+	}
 }
 
 void mouseMove(int x, int y) {
 	if (rotate) {
-		theta += (x - oldX) * 0.002f;
-		phi += (y - oldY) * 0.002f;
+		phi += (x - oldX) * 0.002f;
+		theta += (y - oldY) * 0.002f;
 	}
 	oldX = x;
 	oldY = y;
@@ -104,8 +147,36 @@ void mouseMove(int x, int y) {
 }
 
 void specialKeyboard(int key, int x, int y) {
-	pacman.move(key, board);
-	glutPostRedisplay();
+	if (!paused) {
+		pontuation++;
+		pacman.move(key, board);
+		glutPostRedisplay();
+		for (int i = 0; i < numberOffGhosts; i++) {
+			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
+				printf("      ---==YOU'RE A LOSER==---\n");
+				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
+				exit(0);
+
+			}
+		}
+	}
+}
+
+void keyboard(unsigned char key, int x, int y) {
+	switch (key) {
+	case 'q':
+	case 'Q':
+		exit(0);
+		break;
+	case 'p':
+	case 'P':
+		paused = !paused;
+		break;
+	case 'r':
+	case 'R':
+		restartGame();
+		break;
+	}
 }
 
 void main(int argc, char** argv) {
@@ -118,8 +189,9 @@ void main(int argc, char** argv) {
 	glutDisplayFunc(display);
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseMove);
+	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(specialKeyboard);
-	glEnable(GL_DEPTH_TEST); /* Enable hidden--surface--removal */
+	glEnable(GL_DEPTH_TEST);
 	glutTimerFunc(timeUpdate, update, timeUpdate);
 	glutMainLoop();
 }

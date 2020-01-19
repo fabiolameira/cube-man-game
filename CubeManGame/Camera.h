@@ -10,4 +10,6 @@ public:
 	Camera();
 
 	void move(float phi, float theta);
+
+	void zoom(int button);
 };

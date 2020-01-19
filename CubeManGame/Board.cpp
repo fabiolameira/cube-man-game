@@ -28,7 +28,7 @@ void Board::map() {
 	srand((int)time(0));
 	idMap = rand() % 4;
 	switch (idMap) {
-	//switch (4) {
+	//switch (1) {
 	case 1: 
 		this->matrix[0][1] = false;
 		this->matrix[0][6] = false;
@@ -48,7 +48,6 @@ void Board::map() {
 		this->matrix[3][2] = false;
 		this->matrix[3][9] = false;
 		this->matrix[3][10] = false;
-		this->matrix[3][11] = false;
 		this->matrix[4][2] = false;
 		this->matrix[4][4] = false;
 		this->matrix[4][6] = false;
@@ -67,7 +66,6 @@ void Board::map() {
 		this->matrix[7][5] = false;
 		this->matrix[7][7] = false;
 		this->matrix[7][9] = false;
-		this->matrix[8][0] = false;
 		this->matrix[8][1] = false;
 		this->matrix[8][2] = false;
 		this->matrix[8][9] = false;

@@ -194,7 +194,6 @@ void Ghost::translatePosition() {
 	glTranslatef(-(TAB_SIZE * CELL_SIZE) / 2, -(TAB_SIZE * CELL_SIZE) / 2, CELL_SIZE / 2);
 	glTranslatef(this->x * CELL_SIZE + CELL_SIZE / 2, this->y * CELL_SIZE + CELL_SIZE / 2, 0);
 }
-
 void Ghost::draw() {
 	glPushMatrix();
 	translatePosition();
