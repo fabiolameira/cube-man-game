@@ -57,6 +57,12 @@ void myInit() {
 		}
 	}
 }
+
+void restartGame() {
+	if (paused) paused = !paused;
+	board = Board();
+	myInit();
+}
    
 
 void display() {
@@ -165,7 +171,7 @@ void keyboard(unsigned char key, int x, int y) {
 		break;
 	case 'r':
 	case 'R':
-		// Implementar RestartGame
+		restartGame();
 		break;
 	}
 }
