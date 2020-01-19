@@ -6,7 +6,7 @@
 class Pacman {
 public:
 	Cube cube;
-	int x, y;
+	float x, y;
 	float scale;
 
 	Pacman();

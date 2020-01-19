@@ -24,6 +24,8 @@ Board board = Board();
 Camera camera = Camera();
 Pacman pacman = Pacman();
 Ghost* ghosts = new Ghost[numberOffGhosts];
+int key;
+int idex;
 
 void myInit() {
 	bool matrix[TAB_SIZE][TAB_SIZE];
@@ -40,33 +42,32 @@ void myInit() {
 	while (!position) {
 		pacman.randomPosition(board);
 		position = true;
-		if (matrix[pacman.x][pacman.y]){
+		int x = pacman.x;
+		int y = pacman.y;
+		if (matrix[x][y]){
 			position = false;
 		}
-		if (matrix[pacman.x+1][pacman.y]){
+		if (matrix[x+1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x-1][pacman.y]){
+		if (matrix[x-1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y+1]){
+		if (matrix[x][y+1]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y-1]) {
+		if (matrix[x][y-1]) {
 			position = false;
 		}
 	}
 }
    
-
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	// Camara
 	camera.move(phi, theta);
-
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
@@ -102,7 +103,6 @@ void myReshape(int w, int h) {
 }
 
 void update(int v) {
-
 	if (!paused) {
 		for (int i = 0; i < numberOffGhosts; i++) {
 			ghosts[i].move(pacman.x, pacman.y, board);
@@ -137,17 +137,30 @@ void mouseMove(int x, int y) {
 	glutPostRedisplay();
 }
 
-void specialKeyboard(int key, int x, int y) {
+void updatePacman(int v) {
+	pacman.move(key, board);
+	glutPostRedisplay();
+	idex++;
+	if (idex==11){
+		idex=0;
+	}else {
+		glutTimerFunc(10, updatePacman, 10);
+	}
+}
+
+void specialKeyboard(int k, int x, int y) {
 	if (!paused) {
-		pacman.move(key, board);
-		glutPostRedisplay();
+		key = k;
+		idex = 0;
+		glutTimerFunc(10, updatePacman, 10);
+		pacman.x = (int)pacman.x;
+		pacman.y = (int)pacman.y;
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
 				printf("---==YOU'RE A LOSER==---");
 				printf(" ");
 				printf(" ");
 				exit(0);
-
 			}
 		}
 	}
@@ -167,6 +180,7 @@ void keyboard(unsigned char key, int x, int y) {
 	case 'R':
 		// Implementar RestartGame
 		break;
+
 	}
 }
 
