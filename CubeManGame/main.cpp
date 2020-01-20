@@ -13,6 +13,7 @@ extern const int TAB_SIZE = 12; // Tamanho (número de casas) do tabuleiro quadra
 // Variaveis globais
 int timeUpdate = 500;
 int numberOffGhosts = 5;
+int pontuation = 0;
 bool paused = false;
 
 //Camera rotatian
@@ -61,6 +62,13 @@ void myInit() {
 		}
 	}
 }
+
+void restartGame() {
+	if (paused) paused = !paused;
+	pontuation = 0;
+	board = Board();
+	myInit();
+}
    
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -80,7 +88,8 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("---==YOU'RE A WINNER==---");
+		printf("         ---==YOU'RE A WINNER==---\n");
+		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
 		exit(0);
 	}
 
@@ -139,30 +148,32 @@ void mouseMove(int x, int y) {
 
 void updatePacman(int v) {
 	pacman.move(key, board);
+	pacman.draw();
 	glutPostRedisplay();
-	idex++;
-	if (idex==11){
+	if (idex==8){
 		idex=0;
 	}else {
+		idex++;
 		glutTimerFunc(10, updatePacman, 10);
 	}
 }
 
 void specialKeyboard(int k, int x, int y) {
-	if (!paused) {
+	//if (!paused) {
 		key = k;
 		idex = 0;
 		glutTimerFunc(10, updatePacman, 10);
+		pontuation++;
+		pacman.move(key, board);
 		pacman.x = (int)pacman.x;
 		pacman.y = (int)pacman.y;
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
-				printf("---==YOU'RE A LOSER==---");
-				printf(" ");
-				printf(" ");
+				printf("      ---==YOU'RE A LOSER==---\n");
+				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
 				exit(0);
 			}
-		}
+	//	}
 	}
 }
 
@@ -178,7 +189,7 @@ void keyboard(unsigned char key, int x, int y) {
 		break;
 	case 'r':
 	case 'R':
-		// Implementar RestartGame
+		restartGame();
 		break;
 
 	}
@@ -197,6 +208,6 @@ void main(int argc, char** argv) {
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(specialKeyboard);
 	glEnable(GL_DEPTH_TEST);
-	glutTimerFunc(timeUpdate, update, timeUpdate);
+	//glutTimerFunc(timeUpdate, update, timeUpdate);
 	glutMainLoop();
 }
