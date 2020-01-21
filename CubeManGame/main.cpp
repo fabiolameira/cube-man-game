@@ -86,7 +86,7 @@ void display() {
 		ghosts[i].draw();
 	}
 
-	board.toStep(pacman.x, pacman.y);
+	board.toStep((int)pacman.x, (int)pacman.y);
 	if (board.victoryValidator()) {
 		printf("         ---==YOU'RE A WINNER==---\n");
 		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
@@ -165,8 +165,8 @@ void specialKeyboard(int k, int x, int y) {
 		glutTimerFunc(10, updatePacman, 10);
 		pontuation++;
 		pacman.move(key, board);
-		pacman.x = (int)pacman.x;
-		pacman.y = (int)pacman.y;
+		//pacman.x = (int)pacman.x;
+		//pacman.y = (int)pacman.y;
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
 				printf("      ---==YOU'RE A LOSER==---\n");
