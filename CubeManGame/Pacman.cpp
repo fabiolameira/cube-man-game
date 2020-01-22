@@ -1,5 +1,6 @@
 #include <gl/glut.h>
 #include "Pacman.h"
+#include <math.h>
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
 Pacman::Pacman() {
@@ -33,22 +34,22 @@ void Pacman::randomPosition(Board board) {
 void Pacman::move(int key, Board board) {
 	switch (key) {
 	case GLUT_KEY_UP:
-		if (this->y != TAB_SIZE - 1 && board.haveCube((int)this->x, (int)this->y + 1)) {
+		if (this->y != TAB_SIZE - 1 && board.haveCube(floor(this->x), floor(this->y + 1))) {
 			this->y+=0.1;
 		}
 		break;
 	case GLUT_KEY_DOWN:
-		if (this->y != 0 && board.haveCube((int)this->x, (int)this->y - 1)) {
+		if (this->y > 0 && board.haveCube(floor(this->x), ceil(this->y) - 1)) {
 			this->y-=0.1;
 		}
 		break;
 	case GLUT_KEY_RIGHT:
-		if (this->x != TAB_SIZE - 1 && board.haveCube((int)this->x + 1, (int)this->y)) {
+		if (this->x != TAB_SIZE - 1 && board.haveCube(floor(this->x) + 1, floor(this->y))) {
 			this->x+=0.1;
 		}
 		break;
 	case GLUT_KEY_LEFT:
-		if (this->x != 0 && board.haveCube((int)this->x - 1, (int)this->y)) {
+		if (this->x > 0 && board.haveCube(ceil(this->x) - 1, floor(this->y))){
 			this->x-=0.1;
 		}
 		break;

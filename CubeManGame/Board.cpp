@@ -28,7 +28,6 @@ void Board::map() {
 	srand((int)time(0));
 	idMap = rand() % 4;
 	switch (idMap) {
-	//switch (1) {
 	case 1: 
 		this->matrix[0][1] = false;
 		this->matrix[0][6] = false;
@@ -191,7 +190,6 @@ void Board::map() {
 		this->matrix[11][11] = false;
 		this->matrix[11][10] = false;
 		break;
-
 	}
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
@@ -223,7 +221,6 @@ void Board::draw() {
 			}
 		}
 	}
-
 	glPopMatrix();
 }
 
