@@ -69,8 +69,6 @@ void restartGame() {
 	myInit();
 }
    
-
-
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -93,9 +91,7 @@ void display() {
 		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
 		exit(0);
 	}
-
 	glFlush();
-
 	glutSwapBuffers();
 }
 
@@ -135,9 +131,6 @@ void updateGhost(int v) {
 void update(int v) {
 	if (!paused) {
 			glutTimerFunc(10, updateGhost, 10);
-			//ghosts[i].move(pacman.x, pacman.y, board);
-		//updateGhost(100);
-			//glutPostRedisplay();
 	}
 	glutTimerFunc(v, update, v);
 }
@@ -174,7 +167,6 @@ void updatePacman(int v) {
 		pacman.x = round(pacman.x);
 		pacman.y = round(pacman.y);
 		board.toStep(pacman.x, pacman.y);
-		keyPress = false;
 	}else {
 		pacman.index++;
 		glutTimerFunc(10, updatePacman, 10);
@@ -184,7 +176,7 @@ void updatePacman(int v) {
 
 
 void specialKeyboard(int key, int x, int y) {
-	if (!paused && !keyPress) {
+	//if (!paused && !keyPress) {
 		keyPress = true;
 		pacman.direction = key;
 		pacman.index=0;
@@ -198,7 +190,8 @@ void specialKeyboard(int key, int x, int y) {
 				exit(0);
 			}
 		}
-	}
+		keyPress = false;
+	//}
 }
 
 void keyboard(unsigned char key, int x, int y) {
