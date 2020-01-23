@@ -26,7 +26,7 @@ void Board::map() {
 		}
     }
 	srand((int)time(0));
-	idMap = rand() % 4;
+	idMap = rand() % 4 + 1;
 	switch (idMap) {
 	case 1: 
 		this->matrix[0][1] = false;
