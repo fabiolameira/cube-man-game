@@ -66,9 +66,45 @@ void restartGame() {
 	if (paused) paused = !paused;
 	pontuation = 0;
 	board = Board();
+	pacman = Pacman();
+	ghosts = new Ghost[numberOffGhosts];
 	myInit();
 }
-   
+
+void youWin() {
+
+	pacman.cube.color[0] = 0;
+	pacman.cube.color[1] = 1;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 0;
+		ghosts[i].cube.color[1] = 1;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("         ---==YOU'RE A WINNER==---\n");
+	printf("Congratulations! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
+}
+
+void youLose() {
+
+	pacman.cube.color[0] = 1;
+	pacman.cube.color[1] = 0;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 1;
+		ghosts[i].cube.color[1] = 0;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("      ---==YOU'RE A LOSER==---\n");
+	printf("Game Over! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
+}
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -87,9 +123,7 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("         ---==YOU'RE A WINNER==---\n");
-		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
-		exit(0);
+		youWin();
 	}
 	glFlush();
 	glutSwapBuffers();
@@ -110,12 +144,12 @@ void myReshape(int w, int h) {
 
 void updateGhost(int v) {
 
-
 	if (ghosts[numberOffGhosts-1].index == 9) {
 		for (int indexGhost = 0; indexGhost < numberOffGhosts; indexGhost++){
 			ghosts[indexGhost].index = 0;
 			ghosts[indexGhost].x = round(ghosts[indexGhost].x);
 			ghosts[indexGhost].y = round(ghosts[indexGhost].y);
+			if (ghosts[indexGhost].loseValidator(pacman.x, pacman.y)) youLose();
 		}
 	}
 	else {
@@ -130,7 +164,7 @@ void updateGhost(int v) {
 
 void update(int v) {
 	if (!paused) {
-			glutTimerFunc(10, updateGhost, 10);
+		glutTimerFunc(10, updateGhost, 10);
 	}
 	glutTimerFunc(v, update, v);
 }
@@ -160,13 +194,14 @@ void mouseMove(int x, int y) {
 }
 
 void updatePacman(int v) {
-	pacman.move(board);
+	if (!paused) pacman.move(board);
 	pacman.draw();
 	if (pacman.index==9){
 		pacman.index=0;
 		pacman.x = round(pacman.x);
 		pacman.y = round(pacman.y);
 		board.toStep(pacman.x, pacman.y);
+		keyPress = false;
 	}else {
 		pacman.index++;
 		glutTimerFunc(10, updatePacman, 10);
@@ -185,12 +220,9 @@ void specialKeyboard(int key, int x, int y) {
 		pontuation++;
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
-				printf("      ---==YOU'RE A LOSER==---\n");
-				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
-				exit(0);
+				youLose();
 			}
 		}
-		keyPress = false;
 	}
 }
 
