@@ -209,7 +209,6 @@ void updatePacman(int v) {
 	glutPostRedisplay();
 }
 
-
 void specialKeyboard(int key, int x, int y) {
 	if (!paused && !keyPress) {
 		keyPress = true;

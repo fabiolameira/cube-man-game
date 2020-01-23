@@ -12,8 +12,7 @@ Ghost::Ghost() {
 	if (randomNumber == 1) {
 		this->cube = Cube(1, 0, 1);
 		this->smart = true;
-	}
-	else {
+	} else {
 		this->cube = Cube(0, 0, 1);
 		this->smart = false;
 	}
@@ -34,15 +33,15 @@ void Ghost::randomPosition(Board board) {
 bool Ghost::loseValidator(int xPacman, int yPacman) {
 	if (this->x == xPacman && this->y == yPacman){
 		return true;
-	}else if (this->x == xPacman + 1 && this->y == yPacman){
+	} else if (this->x == xPacman + 1 && this->y == yPacman) {
 			return true;
-	}else if (this->x == xPacman - 1 && this->y == yPacman){
+	} else if (this->x == xPacman - 1 && this->y == yPacman) {
 		return true;
-	}else if (this->x == xPacman && this->y == yPacman-1){
+	} else if (this->x == xPacman && this->y == yPacman-1) {
 		return true;
-	}else if (this->x == xPacman && this->y == yPacman-1){
+	} else if (this->x == xPacman && this->y == yPacman-1) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -50,8 +49,7 @@ bool Ghost::loseValidator(int xPacman, int yPacman) {
 void Ghost::move(int xPacman, int yPacman, Board board) {
 		if (this->smart) {
 			smartMove(xPacman, yPacman, board);
-		}
-		else {
+		} else {
 			randomMove(board);
 		}
 }
