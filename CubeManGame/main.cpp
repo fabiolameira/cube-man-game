@@ -73,7 +73,6 @@ void restartGame() {
 
 void youWin() {
 
-	paused = !paused;
 	pacman.cube.color[0] = 0;
 	pacman.cube.color[1] = 1;
 	pacman.cube.color[2] = 0;
@@ -86,11 +85,11 @@ void youWin() {
 
 	printf("         ---==YOU'RE A WINNER==---\n");
 	printf("Congratulations! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
 }
 
 void youLose() {
 
-	paused = !paused;
 	pacman.cube.color[0] = 1;
 	pacman.cube.color[1] = 0;
 	pacman.cube.color[2] = 0;
@@ -103,6 +102,7 @@ void youLose() {
 
 	printf("      ---==YOU'RE A LOSER==---\n");
 	printf("Game Over! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
 }
 
 
