@@ -15,8 +15,9 @@ int timeUpdate = 500;
 int numberOffGhosts = 5;
 int pontuation = 0;
 bool paused = false;
+bool keyPress = false;
 
-//Camera rotatian
+//Camera rotation
 int oldX, oldY;
 bool rotate = false;
 float theta = 1, phi = -1.57;
@@ -35,25 +36,27 @@ void myInit() {
 	}
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
-		matrix[ghosts[i].x][ghosts[i].y]=true;
+		matrix[int(ghosts[i].x)][int(ghosts[i].y)]=true;
 	}
 	bool position=false;
 	while (!position) {
 		pacman.randomPosition(board);
 		position = true;
-		if (matrix[pacman.x][pacman.y]){
+		int x = pacman.x;
+		int y = pacman.y;
+		if (matrix[x][y]){
 			position = false;
 		}
-		if (matrix[pacman.x+1][pacman.y]){
+		if (matrix[x+1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x-1][pacman.y]){
+		if (matrix[x-1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y+1]){
+		if (matrix[x][y+1]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y-1]) {
+		if (matrix[x][y-1]) {
 			position = false;
 		}
 	}
@@ -63,18 +66,51 @@ void restartGame() {
 	if (paused) paused = !paused;
 	pontuation = 0;
 	board = Board();
+	pacman = Pacman();
+	ghosts = new Ghost[numberOffGhosts];
 	myInit();
 }
-   
+
+void youWin() {
+
+	pacman.cube.color[0] = 0;
+	pacman.cube.color[1] = 1;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 0;
+		ghosts[i].cube.color[1] = 1;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("         ---==YOU'RE A WINNER==---\n");
+	printf("Congratulations! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
+}
+
+void youLose() {
+
+	pacman.cube.color[0] = 1;
+	pacman.cube.color[1] = 0;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 1;
+		ghosts[i].cube.color[1] = 0;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("      ---==YOU'RE A LOSER==---\n");
+	printf("Game Over! You have made: (%i) points :)\n", (int)pontuation);
+	paused = !paused;
+}
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	// Camara
 	camera.move(phi, theta);
-
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
@@ -87,13 +123,9 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("         ---==YOU'RE A WINNER==---\n");
-		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
-		exit(0);
+		youWin();
 	}
-
 	glFlush();
-
 	glutSwapBuffers();
 }
 
@@ -110,14 +142,29 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void update(int v) {
+void updateGhost(int v) {
 
-	if (!paused) {
-		for (int i = 0; i < numberOffGhosts; i++) {
-			ghosts[i].move(pacman.x, pacman.y, board);
+	if (ghosts[numberOffGhosts-1].index == 9) {
+		for (int indexGhost = 0; indexGhost < numberOffGhosts; indexGhost++){
+			ghosts[indexGhost].index = 0;
+			ghosts[indexGhost].x = round(ghosts[indexGhost].x);
+			ghosts[indexGhost].y = round(ghosts[indexGhost].y);
+			if (ghosts[indexGhost].loseValidator(pacman.x, pacman.y)) youLose();
 		}
+	}
+	else {
+		for (int indexGhost = 0; indexGhost < numberOffGhosts; indexGhost++) {
+			ghosts[indexGhost].move(pacman.x, pacman.y, board);
+			ghosts[indexGhost].index+=1;
+		}
+		glutTimerFunc(10, updateGhost, 10);
+	}
+	glutPostRedisplay();
+}
 
-		glutPostRedisplay();
+void update(int v) {
+	if (!paused) {
+		glutTimerFunc(10, updateGhost, 10);
 	}
 	glutTimerFunc(v, update, v);
 }
@@ -146,17 +193,34 @@ void mouseMove(int x, int y) {
 	glutPostRedisplay();
 }
 
+void updatePacman(int v) {
+	if (!paused) pacman.move(board);
+	pacman.draw();
+	if (pacman.index==9){
+		pacman.index=0;
+		pacman.x = round(pacman.x);
+		pacman.y = round(pacman.y);
+		board.toStep(pacman.x, pacman.y);
+		keyPress = false;
+	}else {
+		pacman.index++;
+		glutTimerFunc(10, updatePacman, 10);
+	}
+	glutPostRedisplay();
+}
+
+
 void specialKeyboard(int key, int x, int y) {
-	if (!paused) {
+	if (!paused && !keyPress) {
+		keyPress = true;
+		pacman.direction = key;
+		pacman.index=0;
+		glutTimerFunc(10, updatePacman, 10);
+		board.toStep(pacman.x, pacman.y);
 		pontuation++;
-		pacman.move(key, board);
-		glutPostRedisplay();
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
-				printf("      ---==YOU'RE A LOSER==---\n");
-				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
-				exit(0);
-
+				youLose();
 			}
 		}
 	}

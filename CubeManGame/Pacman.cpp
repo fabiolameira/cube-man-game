@@ -1,13 +1,15 @@
 #include <gl/glut.h>
 #include "Pacman.h"
+#include <math.h>
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
-
 Pacman::Pacman() {
 	this->cube = Cube(1, 1, 0);
 	this->x = 0;
 	this->y = 0;
 	this->scale = 0.8;
+	this->index = 0;
+	this->direction = 0;
 }
 
 void Pacman::translatePosition() {
@@ -31,26 +33,26 @@ void Pacman::randomPosition(Board board) {
 		exist = board.haveCube(this->x, this->y);
 	}
 }
-void Pacman::move(int key, Board board) {
-	switch (key) {
+void Pacman::move(Board board) {
+	switch (this->direction) {
 	case GLUT_KEY_UP:
-		if (this->y != TAB_SIZE - 1 && board.haveCube(this->x, this->y + 1)) {
-			this->y++;
+		if (this->y != TAB_SIZE - 1 && board.haveCube(floor(this->x), floor(this->y + 1))) {
+			this->y+=0.1;
 		}
 		break;
 	case GLUT_KEY_DOWN:
-		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
-			this->y--;
+		if (this->y > 0 && board.haveCube(floor(this->x), ceil(this->y) - 1)) {
+			this->y-=0.1;
 		}
 		break;
 	case GLUT_KEY_RIGHT:
-		if (this->x != TAB_SIZE - 1 && board.haveCube(this->x + 1, this->y)) {
-			this->x++;
+		if (this->x != TAB_SIZE - 1 && board.haveCube(floor(this->x) + 1, floor(this->y))) {
+			this->x+=0.1;
 		}
 		break;
 	case GLUT_KEY_LEFT:
-		if (this->x != 0 && board.haveCube(this->x - 1, this->y)) {
-			this->x--;
+		if (this->x > 0 && board.haveCube(ceil(this->x) - 1, floor(this->y))){
+			this->x-=0.1;
 		}
 		break;
 	}

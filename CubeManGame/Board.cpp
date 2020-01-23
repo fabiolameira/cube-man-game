@@ -26,9 +26,8 @@ void Board::map() {
 		}
     }
 	srand((int)time(0));
-	idMap = rand() % 4;
+	idMap = rand() % 4 + 1;
 	switch (idMap) {
-	//switch (1) {
 	case 1: 
 		this->matrix[0][1] = false;
 		this->matrix[0][6] = false;
@@ -191,7 +190,6 @@ void Board::map() {
 		this->matrix[11][11] = false;
 		this->matrix[11][10] = false;
 		break;
-
 	}
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
@@ -203,7 +201,7 @@ void Board::map() {
 void Board::draw() {
 	glPushMatrix();
 	// Centrar o tabuleiro no eixo XY e colocar o topo do tabuleiro no eixo dos Z (Z = 0).
-	glTranslatef(-(TAB_SIZE * CELL_SIZE) / 2, -(TAB_SIZE * CELL_SIZE) / 2, -CELL_SIZE / 2);
+	 glTranslatef(-(TAB_SIZE * CELL_SIZE) / 2, -(TAB_SIZE * CELL_SIZE) / 2, -CELL_SIZE / 2);
 
 	for (int x = 0; x < TAB_SIZE; x++) {
 		for (int y = 0; y < TAB_SIZE; y++) {
@@ -223,7 +221,6 @@ void Board::draw() {
 			}
 		}
 	}
-
 	glPopMatrix();
 }
 
