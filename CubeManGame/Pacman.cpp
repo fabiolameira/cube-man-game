@@ -31,8 +31,8 @@ void Pacman::randomPosition(Board board) {
 		exist = board.haveCube(this->x, this->y);
 	}
 }
-void Pacman::move(int key, Board board) {
-	switch (key) {
+void Pacman::move(Board board) {
+	switch (this->direction) {
 	case GLUT_KEY_UP:
 		if (this->y != TAB_SIZE - 1 && board.haveCube(floor(this->x), floor(this->y + 1))) {
 			this->y+=0.1;

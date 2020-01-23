@@ -8,12 +8,14 @@ public:
 	Cube cube;
 	float x, y;
 	float scale;
+	int index;
+	int direction;
 
 	Pacman();
 	void randomPosition(Board board);
 	bool loseValidator(int xGhosts, int yGhosts);
 	void translatePosition();
 	void draw();
-	void move(int key, Board board);
+	void move(Board board);
 
 };

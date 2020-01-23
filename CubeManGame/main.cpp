@@ -15,8 +15,9 @@ int timeUpdate = 500;
 int numberOffGhosts = 5;
 int pontuation = 0;
 bool paused = false;
+bool keyPress = false;
 
-//Camera rotatian
+//Camera rotation
 int oldX, oldY;
 bool rotate = false;
 float theta = 1, phi = -1.57;
@@ -25,8 +26,6 @@ Board board = Board();
 Camera camera = Camera();
 Pacman pacman = Pacman();
 Ghost* ghosts = new Ghost[numberOffGhosts];
-int key;
-int idex;
 
 void myInit() {
 	bool matrix[TAB_SIZE][TAB_SIZE];
@@ -70,6 +69,8 @@ void restartGame() {
 	myInit();
 }
    
+
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -147,24 +148,26 @@ void mouseMove(int x, int y) {
 }
 
 void updatePacman(int v) {
-	pacman.move(key, board);
+	pacman.move(board);
 	pacman.draw();
-	if (idex==8){
-		idex=0;
+	if (pacman.index==9){
+		pacman.index=0;
 		pacman.x = round(pacman.x);
 		pacman.y = round(pacman.y);
 		board.toStep(pacman.x, pacman.y);
 	}else {
-		idex++;
+		pacman.index++;
 		glutTimerFunc(10, updatePacman, 10);
 	}
 	glutPostRedisplay();
 }
 
-void specialKeyboard(int k, int x, int y) {
-	if (!paused) {
-		key = k;
-		idex = 0;
+
+void specialKeyboard(int key, int x, int y) {
+	if (!paused && !keyPress) {
+		keyPress = true;
+		pacman.direction = key;
+		pacman.index=0;
 		glutTimerFunc(10, updatePacman, 10);
 		board.toStep(pacman.x, pacman.y);
 		pontuation++;
@@ -175,6 +178,7 @@ void specialKeyboard(int k, int x, int y) {
 				exit(0);
 			}
 		}
+		keyPress = false;
 	}
 }
 
