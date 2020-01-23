@@ -15,8 +15,9 @@ int timeUpdate = 500;
 int numberOffGhosts = 5;
 int pontuation = 0;
 bool paused = false;
+bool keyPress = false;
 
-//Camera rotatian
+//Camera rotation
 int oldX, oldY;
 bool rotate = false;
 float theta = 1, phi = -1.57;
@@ -41,19 +42,21 @@ void myInit() {
 	while (!position) {
 		pacman.randomPosition(board);
 		position = true;
-		if (matrix[pacman.x][pacman.y]){
+		int x = pacman.x;
+		int y = pacman.y;
+		if (matrix[x][y]){
 			position = false;
 		}
-		if (matrix[pacman.x+1][pacman.y]){
+		if (matrix[x+1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x-1][pacman.y]){
+		if (matrix[x-1][y]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y+1]){
+		if (matrix[x][y+1]){
 			position = false;
 		}
-		if (matrix[pacman.x][pacman.y-1]) {
+		if (matrix[x][y-1]) {
 			position = false;
 		}
 	}
@@ -67,14 +70,13 @@ void restartGame() {
 }
    
 
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	// Camara
 	camera.move(phi, theta);
-
 	// Redimensiona a mundo para caber na janela.
 	glScalef(0.2, 0.2, 0.2);
 
@@ -111,7 +113,6 @@ void myReshape(int w, int h) {
 }
 
 void update(int v) {
-
 	if (!paused) {
 		for (int i = 0; i < numberOffGhosts; i++) {
 			ghosts[i].move(pacman.x, pacman.y, board);
@@ -146,17 +147,36 @@ void mouseMove(int x, int y) {
 	glutPostRedisplay();
 }
 
+void updatePacman(int v) {
+	pacman.move(board);
+	pacman.draw();
+	if (pacman.index==9){
+		pacman.index=0;
+		pacman.x = round(pacman.x);
+		pacman.y = round(pacman.y);
+		board.toStep(pacman.x, pacman.y);
+		keyPress = false;
+	}else {
+		pacman.index++;
+		glutTimerFunc(10, updatePacman, 10);
+	}
+	glutPostRedisplay();
+}
+
+
 void specialKeyboard(int key, int x, int y) {
-	if (!paused) {
+	if (!paused && !keyPress) {
+		keyPress = true;
+		pacman.direction = key;
+		pacman.index=0;
+		glutTimerFunc(10, updatePacman, 10);
+		board.toStep(pacman.x, pacman.y);
 		pontuation++;
-		pacman.move(key, board);
-		glutPostRedisplay();
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
 				printf("      ---==YOU'RE A LOSER==---\n");
 				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
 				exit(0);
-
 			}
 		}
 	}

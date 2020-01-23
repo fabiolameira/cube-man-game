@@ -9,7 +9,6 @@ public:
 	Cube cube;
 	bool matrix[12][12]; 
 	bool matrixStep[12][12];
-
 	Board();
 	bool haveCube(int x, int y);
 	void toStep(int x, int y);
