@@ -155,6 +155,7 @@ void updatePacman(int v) {
 		pacman.x = round(pacman.x);
 		pacman.y = round(pacman.y);
 		board.toStep(pacman.x, pacman.y);
+		keyPress = false;
 	}else {
 		pacman.index++;
 		glutTimerFunc(10, updatePacman, 10);
@@ -178,7 +179,6 @@ void specialKeyboard(int key, int x, int y) {
 				exit(0);
 			}
 		}
-		keyPress = false;
 	}
 }
 
