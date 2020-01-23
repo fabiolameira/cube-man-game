@@ -36,7 +36,7 @@ void myInit() {
 	}
 	for (int i = 0; i < numberOffGhosts; i++) {
 		ghosts[i].randomPosition(board);
-		matrix[ghosts[i].x][ghosts[i].y]=true;
+		matrix[int(ghosts[i].x)][int(ghosts[i].y)]=true;
 	}
 	bool position=false;
 	while (!position) {
@@ -112,13 +112,32 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void updateGhost(int v) {
+
+
+	if (ghosts[numberOffGhosts-1].index == 9) {
+		for (int indexGhost = 0; indexGhost < numberOffGhosts; indexGhost++){
+			ghosts[indexGhost].index = 0;
+			ghosts[indexGhost].x = round(ghosts[indexGhost].x);
+			ghosts[indexGhost].y = round(ghosts[indexGhost].y);
+		}
+	}
+	else {
+		for (int indexGhost = 0; indexGhost < numberOffGhosts; indexGhost++) {
+			ghosts[indexGhost].move(pacman.x, pacman.y, board);
+			ghosts[indexGhost].index+=1;
+		}
+		glutTimerFunc(10, updateGhost, 10);
+	}
+	glutPostRedisplay();
+}
+
 void update(int v) {
 	if (!paused) {
-		for (int i = 0; i < numberOffGhosts; i++) {
-			ghosts[i].move(pacman.x, pacman.y, board);
-		}
-
-		glutPostRedisplay();
+			glutTimerFunc(10, updateGhost, 10);
+			//ghosts[i].move(pacman.x, pacman.y, board);
+		//updateGhost(100);
+			//glutPostRedisplay();
 	}
 	glutTimerFunc(v, update, v);
 }

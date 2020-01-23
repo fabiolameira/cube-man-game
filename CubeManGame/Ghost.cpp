@@ -2,6 +2,7 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include "Ghost.h"
+#include <math.h>
 
 extern const int TAB_SIZE;
 extern const int CELL_SIZE;
@@ -16,7 +17,6 @@ Ghost::Ghost() {
 		this->cube = Cube(0, 0, 1);
 		this->smart = false;
 	}
-
 	this->x = TAB_SIZE / 2;
 	this->y = TAB_SIZE / 2;
 	this->scale = 0.8;
@@ -30,7 +30,6 @@ void Ghost::randomPosition(Board board) {
 		exist = board.haveCube(this->x, this->y);
 	}
 }
-
 
 bool Ghost::loseValidator(int xPacman, int yPacman) {
 	if (this->x == xPacman && this->y == yPacman){
@@ -66,15 +65,15 @@ void Ghost::move(int xPacman, int yPacman, Board board) {
 }
 
 void Ghost::smartMove(int xPacman, int yPacman, Board board) {
-	int xResult = xPacman - this->x;
-	int yResult = yPacman - this->y;
+	int xResult = floor(xPacman) - floor(this->x);
+	int yResult = floor(yPacman) - floor(this->y);
 	bool move = false;
 	int i = 0;
 	while (!move){
 		if (abs(xResult)>= abs(yResult)){
 			if (xResult>0){
-				if (this->x >= 0 && board.haveCube(this->x + 1, this->y)) {
-					this->x++;
+				if (ceil(this->x) >= 0 && board.haveCube(ceil(this->x) + 1, floor(this->y))) {
+					this->x+=0.1;
 					move = true;
 				}else{
 					i++;
@@ -92,8 +91,8 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 				}
 			}
 			else {
-				if (this->x <= TAB_SIZE-1 && board.haveCube(this->x - 1, this->y)) {
-					this->x--;
+				if (ceil(this->x) <= TAB_SIZE-1 && board.haveCube(ceil(this->x)-1, floor(this->y))) {
+					this->x-=0.1;
 					move = true;
 				}else {
 					i++;
@@ -113,8 +112,8 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 		}
 		else{
 			if (yResult > 0) {
-				if (this->y >= 0 && board.haveCube(this->x, this->y + 1)) {
-					this->y++;
+				if (ceil(this->y) >= 0 && board.haveCube(floor(this->x), ceil(this->y) + 1)) {
+					this->y+=0,1;
 					move = true;
 				}else {
 					i++;
@@ -132,8 +131,8 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 				}
 			}
 			else {
-				if (this->y <= TAB_SIZE-1 && board.haveCube(this->x, this->y - 1)) {
-					this->y--;
+				if (ceil(this->y) <= TAB_SIZE-1 && board.haveCube(floor(this->x), ceil(this->y) - 1)) {
+					this->y-=0.1;
 					move = true;
 				}else {
 					i++;
@@ -157,32 +156,29 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 void Ghost::randomMove(Board board) {
 	switch (this->direction) {
 	case 100:
-		if (this->x != 0 && board.haveCube(this->x - 1, this->y)) {
-			this->x--;
-		}
-		else {
+		if (this->y != TAB_SIZE - 1 && board.haveCube(floor(this->x), floor(this->y + 1))) {
+			this->y += 0.1;
+		}else {
 			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 101:
-		if (this->y != TAB_SIZE - 1 && board.haveCube(this->x, this->y + 1)) {
-			this->y++;
-		}
-		else {
+		if (this->y > 0 && board.haveCube(floor(this->x), ceil(this->y) - 1)) {
+			this->y -= 0.1;
+		}else {
 			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 102:
-		if (this->x != TAB_SIZE - 1 && board.haveCube(this->x + 1, this->y)) {
-			this->x++;
-		}
-		else {
+		if (this->x != TAB_SIZE - 1 && board.haveCube(floor(this->x) + 1, floor(this->y))) {
+			this->x += 0.1;
+		}else {
 			this->direction = rand() % 4 + 100;
 		}
 		break;
 	case 103:
-		if (this->y != 0 && board.haveCube(this->x, this->y - 1)) {
-			this->y--;
+		if (this->x > 0 && board.haveCube(ceil(this->x) - 1, floor(this->y))) {
+			this->x -= 0.1;
 		}else{
 			this->direction = rand() % 4 + 100;
 		}

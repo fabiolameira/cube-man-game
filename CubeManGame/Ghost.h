@@ -6,9 +6,10 @@
 class Ghost {
 public:
 	Cube cube;
-	int x, y;
+	float x, y;
 	float scale;
 	bool smart;
+	int index=0;
 	int direction = rand() % 4 + 100;
 	Ghost();
 	void draw();
