@@ -49,20 +49,12 @@ bool Ghost::loseValidator(int xPacman, int yPacman) {
 }
 
 void Ghost::move(int xPacman, int yPacman, Board board) {
-	if (!loseValidator(xPacman, yPacman)){
 		if (this->smart) {
 			smartMove(xPacman, yPacman, board);
 		}
 		else {
 			randomMove(board);
 		}
-	}
-	else{
-		printf("---==YOU'RE A LOSER==---");
-		printf(" ");
-		printf(" ");
-		exit(0);
-	}
 }
 
 void Ghost::smartMove(int xPacman, int yPacman, Board board) {

@@ -15,5 +15,4 @@ public:
 	void map();
 	bool victoryValidator();
 	void draw();
-
 };

@@ -8,6 +8,8 @@ Pacman::Pacman() {
 	this->x = 0;
 	this->y = 0;
 	this->scale = 0.8;
+	this->index = 0;
+	this->direction = 0;
 }
 
 void Pacman::translatePosition() {

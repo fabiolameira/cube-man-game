@@ -66,9 +66,27 @@ void restartGame() {
 	if (paused) paused = !paused;
 	pontuation = 0;
 	board = Board();
+	pacman = Pacman();
+	ghosts = new Ghost[numberOffGhosts];
 	myInit();
 }
-   
+
+void youLose() {
+
+	paused = !paused;
+	pacman.cube.color[0] = 1;
+	pacman.cube.color[1] = 0;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 1;
+		ghosts[i].cube.color[1] = 0;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("      ---==YOU'RE A LOSER==---\n");
+	printf("Game Over! You have made: (%i) points :)\n", (int)pontuation);
+}
 
 
 void display() {
@@ -115,9 +133,13 @@ void myReshape(int w, int h) {
 void update(int v) {
 	if (!paused) {
 		for (int i = 0; i < numberOffGhosts; i++) {
-			ghosts[i].move(pacman.x, pacman.y, board);
+			if (!ghosts[i].loseValidator(pacman.x, pacman.y)) {
+				ghosts[i].move(pacman.x, pacman.y, board);
+			}
+			else {
+				youLose();
+			}
 		}
-
 		glutPostRedisplay();
 	}
 	glutTimerFunc(v, update, v);
@@ -174,9 +196,7 @@ void specialKeyboard(int key, int x, int y) {
 		pontuation++;
 		for (int i = 0; i < numberOffGhosts; i++) {
 			if (pacman.loseValidator(ghosts[i].x, ghosts[i].y)) {
-				printf("      ---==YOU'RE A LOSER==---\n");
-				printf("Game Over! You have made: (%i) points :)\n", (int) pontuation);
-				exit(0);
+				youLose();
 			}
 		}
 	}
