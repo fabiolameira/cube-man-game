@@ -91,7 +91,7 @@ void Ghost::smartMove(int xPacman, int yPacman, Board board) {
 					}
 				}
 			}else {
-				if (board.haveCube(this->x - 1, this->y)) {
+				if (this->x > 0 && board.haveCube(ceil(this->x) - 1, floor(this->y))) {
 					this->x-=0.1;
 					move = true;
 				}

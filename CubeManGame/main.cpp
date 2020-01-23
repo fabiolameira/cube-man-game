@@ -176,7 +176,7 @@ void updatePacman(int v) {
 
 
 void specialKeyboard(int key, int x, int y) {
-	//if (!paused && !keyPress) {
+	if (!paused && !keyPress) {
 		keyPress = true;
 		pacman.direction = key;
 		pacman.index=0;
@@ -191,7 +191,7 @@ void specialKeyboard(int key, int x, int y) {
 			}
 		}
 		keyPress = false;
-	//}
+	}
 }
 
 void keyboard(unsigned char key, int x, int y) {
