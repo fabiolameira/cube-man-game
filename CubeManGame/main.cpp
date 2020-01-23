@@ -71,6 +71,23 @@ void restartGame() {
 	myInit();
 }
 
+void youWin() {
+
+	paused = !paused;
+	pacman.cube.color[0] = 0;
+	pacman.cube.color[1] = 1;
+	pacman.cube.color[2] = 0;
+
+	for (int i = 0; i < numberOffGhosts; i++) {
+		ghosts[i].cube.color[0] = 0;
+		ghosts[i].cube.color[1] = 1;
+		ghosts[i].cube.color[2] = 0;
+	}
+
+	printf("         ---==YOU'RE A WINNER==---\n");
+	printf("Congratulations! You have made: (%i) points :)\n", (int)pontuation);
+}
+
 void youLose() {
 
 	paused = !paused;
@@ -107,9 +124,7 @@ void display() {
 
 	board.toStep(pacman.x, pacman.y);
 	if (board.victoryValidator()) {
-		printf("         ---==YOU'RE A WINNER==---\n");
-		printf("Congratulations! You have made: (%i) points :)\n", (int) pontuation);
-		exit(0);
+		youWin();
 	}
 
 	glFlush();
